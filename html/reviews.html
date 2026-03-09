@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Отзывы об экскурсии</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&display=swap');
+    body { margin: 0; font-family: 'Mulish', sans-serif; background: #f5f5f7; color: #222; }
+    .wrap { max-width: 980px; margin: 28px auto; padding: 0 16px; }
+    h1 { margin: 0 0 14px; }
+    .back { display: inline-block; margin-bottom: 16px; color: #2f6df4; text-decoration: none; }
+    .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; }
+    .meta { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .meta b { font-size: 16px; }
+    .meta span { font-size: 12px; color: #8a8a8a; }
+    .stars { margin-left: auto; color: #F5B50A; letter-spacing: 1px; }
+    p { margin: 0; line-height: 1.45; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back" href="excursion.html">← Назад к экскурсии</a>
+    <h1>Отзывы по экскурсии</h1>
+    <div id="reviews"></div>
+  </div>
+
+  <script>
+    const container = document.getElementById('reviews');
+    const fallback = [
+      { author: 'Zeee Zee', date: '01 декабря', text: 'Очень советую эту компанию, сотрудники очень вежливые и с юмором.' },
+      { author: 'Эдуард Насибулин', date: '24 октября', text: 'Экскурсия на высшем уровне, гид отлично все рассказывает, без запинок.' },
+      { author: 'Лейсан Гайсина', date: '16 октября', text: 'Была на экскурсии, такой красивый город, все очень интересно и познавательно.' }
+    ];
+    let reviews = fallback;
+    try {
+      const saved = JSON.parse(localStorage.getItem('excursionReviews') || 'null');
+      if (Array.isArray(saved) && saved.length) reviews = saved;
+    } catch (_e) {}
+    container.innerHTML = reviews.map(r => `
+      <article class="card">
+        <div class="meta">
+          <b>${r.author}</b>
+          <span>${r.date}</span>
+          <span class="stars">★★★★★</span>
+        </div>
+        <p>${r.text}</p>
+      </article>
+    `).join('');
+  </script>
+</body>
+</html>
