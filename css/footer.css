@@ -46,7 +46,18 @@
   display: inline-flex;
   margin: 0 auto;
   gap: 12px;
-  transition: .5s ease;
+  transition: transform 0.22s ease, color 0.22s ease, text-decoration-color 0.22s ease;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.footer-top-left > * {
+  position: relative;
+}
+
+.footer-top-left > *:hover {
+  transform: scale(1.08);
+  z-index: 2;
 }
 
 .footer-address:hover {
