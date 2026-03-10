@@ -2,6 +2,7 @@
 
 html {
     overflow-x: clip;
+    scrollbar-gutter: stable;
 }
 
 body {
@@ -883,24 +884,28 @@ hr {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 25px;
+    perspective: 1000px;
 }
 
 .excursion-card {
     background: #fff;
     border-radius: 16px;
-    overflow: hidden;
     transition: all 0.3s ease;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+    z-index: 1;
+    transform-origin: center;
 }
 
 .excursion-card:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    z-index: 100;
 }
 
 .card-image {
     position: relative;
-    height: stretch;
     overflow: hidden;
 }
 
@@ -939,6 +944,7 @@ hr {
 
 .card-content {
     padding: 15px;
+    overflow: hidden;
 }
 
 .card-content h3 {
@@ -2100,7 +2106,6 @@ hr {
 
 .card img {
     width: 100%;
-    height: 100%;
     object-fit: cover;
     display: block;
 }
@@ -4365,7 +4370,6 @@ section.gallery .gallery-arrow:disabled {
     /* Excursion cards nu ies din grid */
     .excursion-card {
         min-width: 0;
-        overflow: hidden;
     }
 
     /* Topic items cu white-space: nowrap - permit scroll intern în container */
