@@ -907,6 +907,8 @@ hr {
 .card-image {
     position: relative;
     overflow: hidden;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .card-image img {
@@ -1572,16 +1574,11 @@ hr {
     font-size: 14px;
 }
 
-.avatar-1 {
-    background: linear-gradient(135deg, #ff9d5c 0%, #ff6b6b 100%);
-}
-
-.avatar-2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.avatar-3 {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+.avatar img{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    border-radius: 50%;
 }
 
 .author-block {
@@ -2506,11 +2503,11 @@ section.gallery .gallery-arrow:disabled {
 }
 
 .topic-item {
-    padding: 14px 20px;
+    padding: 10px 18px;
     border-radius: 30px;
-    border: 1px solid #17AA00;
+    border: 1.5px solid #17AA00;
     color: #17AA00;
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.25s ease;
     white-space: nowrap;
@@ -2573,20 +2570,64 @@ section.gallery .gallery-arrow:disabled {
 
 .topics-modal-content {
     background: white;
-    width: 520px;
-    padding: 30px;
+    width: 1200px;
+    max-width: 95vw;
+    padding: 28px 32px 32px;
     border-radius: 16px;
+    max-height: 85vh;
+    overflow-y: auto;
+    animation: fadeInScale 0.22s ease;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
 }
 
+.modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
 #closeTopics {
-    font-size: 22px;
+    font-size: 26px;
     cursor: pointer;
+    color: #555;
+    line-height: 1;
+    padding: 0 4px;
+    transition: color 0.2s;
+}
+
+#closeTopics:hover {
+    color: #111;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.filter-section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111;
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 @media (max-width: 768px) {
@@ -3037,9 +3078,9 @@ section.gallery .gallery-arrow:disabled {
 .all-cats-modal-content {
     background: #fff;
     border-radius: 20px;
-    width: 80%;
-    max-width: 520px;
-    max-height: 80vh;
+    width: 680px;
+    max-width: 95vw;
+    max-height: 85vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -3062,7 +3103,7 @@ section.gallery .gallery-arrow:disabled {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 24px 16px;
+    padding: 20px 28px 16px;
     border-bottom: 1px solid #eee;
 }
 
@@ -3087,41 +3128,45 @@ section.gallery .gallery-arrow:disabled {
     color: #111;
 }
 
-.all-cats-list {
-    list-style: none;
-    padding: 16px 16px 20px;
-    margin: 0;
+.all-cats-body {
+    padding: 20px 28px 28px;
     overflow-y: auto;
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.all-cats-list li {
+.all-cats-list-item {
+    list-style: none;
     padding: 10px 18px;
     border-radius: 30px;
-    border: 2px solid #2e7d32;
-    color: #2e7d32;
+    border: 1.5px solid #17AA00;
+    color: #17AA00;
     font-size: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
+    font-family: 'Mulish', sans-serif;
 }
 
-.all-cats-list li:hover {
-    background: #2e7d32;
+.all-cats-list-item:hover {
+    background: #17AA00;
     color: #fff;
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 
 @media (max-width: 480px) {
     .all-cats-modal-content {
-        width: 80%;
+        width: 95vw;
         border-radius: 16px;
-        max-height: 85vh;
+        max-height: 88vh;
     }
 
-    .all-cats-list li {
+    .all-cats-body {
+        padding: 16px 16px 20px;
+    }
+
+    .all-cats-list-item {
         font-size: 14px;
         padding: 9px 14px;
     }
@@ -3435,12 +3480,13 @@ section.gallery .gallery-arrow:disabled {
         align-items: flex-start;
     }
 
-    .avatar {
+    .avatar img{
         width: 44px;
         height: 44px;
         min-width: 44px;
         font-size: 15px;
         border-radius: 50%;
+        margin-top: 20px;
     }
 
     .author {
@@ -4315,7 +4361,6 @@ section.gallery .gallery-arrow:disabled {
 /* ===== FIX OVERFLOW AXA X PE MOBILE ===== */
 @media (max-width: 768px) {
 
-    /* Excepții pentru elemente care trebuie să depășească (absolute/fixed) */
     .mob-menu-drawer,
     .mob-phone-modal,
     .mob-menu-overlay,
@@ -4325,7 +4370,7 @@ section.gallery .gallery-arrow:disabled {
     }
 
     /* Imagini responsive - exceptie pentru gallery-image */
-    img:not(.gallery-image) {
+    img:not(.avatar img) {
         max-width: 100%;
         width: 100%;
         height: 200px;

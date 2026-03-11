@@ -418,7 +418,43 @@
       <h3>Все категории</h3>
       <button type="button" id="allCategoriesClose" aria-label="Закрыть">×</button>
     </div>
-    <div class="cats-modal-list" id="allCategoriesList"></div>
+    <div class="cats-modal-body">
+      <div class="cats-filter-section">
+        <div class="cats-filter-title">Категория</div>
+        <div class="cats-filter-tags">
+          <button type="button" class="cats-modal-item" data-category="Индивидуальные экскурсии">Индивидуальные экскурсии</button>
+          <button type="button" class="cats-modal-item" data-category="Групповые экскурсии в Казани">Групповые экскурсии в Казани</button>
+          <button type="button" class="cats-modal-item" data-category="Школьные экскурсии">Школьные экскурсии</button>
+          <button type="button" class="cats-modal-item" data-category="Речные прогулки в Казани">Речные прогулки в Казани</button>
+          <button type="button" class="cats-modal-item" data-category="Пешеходная экскурсия по Казани">Пешеходная экскурсия по Казани</button>
+          <button type="button" class="cats-modal-item" data-category="Экскурсия по Казани на автобусе">Экскурсия по Казани на автобусе</button>
+        </div>
+      </div>
+      <div class="cats-filter-section">
+        <div class="cats-filter-title">Достопримечательности</div>
+        <div class="cats-filter-tags">
+          <button type="button" class="cats-modal-item" data-category="По старо татарской слободе">По старо татарской слободе</button>
+          <button type="button" class="cats-modal-item" data-category="Храм + всех религий">Храм + всех религий</button>
+          <button type="button" class="cats-modal-item" data-category="Улица Баумана Казань">Улица Баумана Казань</button>
+          <button type="button" class="cats-modal-item" data-category="Дворец земледельцев">Дворец земледельцев</button>
+          <button type="button" class="cats-modal-item" data-category="Экскурсия в Раифский">Экскурсия в Раифский</button>
+          <button type="button" class="cats-modal-item" data-category="Кул шариф">Кул шариф</button>
+          <button type="button" class="cats-modal-item" data-category="Театр экият">Театр экият</button>
+          <button type="button" class="cats-modal-item" data-category="Экскурсия туган авылым">Экскурсия туган авылым</button>
+          <button type="button" class="cats-modal-item" data-category="Башня сюомбике">Башня сюомбике</button>
+          <button type="button" class="cats-modal-item" data-category="Казань арена">Казань арена</button>
+          <button type="button" class="cats-modal-item" data-category="Дом Ушаковой">Дом Ушаковой</button>
+        </div>
+      </div>
+      <div class="cats-filter-section">
+        <div class="cats-filter-title">Форматы</div>
+        <div class="cats-filter-tags">
+          <button type="button" class="cats-modal-item" data-category="Казань экскурсии выходного дня">Казань экскурсии выходного дня</button>
+          <button type="button" class="cats-modal-item" data-category="Авторские экскурсии Казань">Авторские экскурсии Казань</button>
+          <button type="button" class="cats-modal-item" data-category="Казань экскурсии для детей">Казань экскурсии для детей</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -635,7 +671,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-1"><img src="img/reviews/pavel-gerasimov.jpg" alt="Pavel Gerasimov" onerror="this.style.display='none'"><span class="avatar-initials">PG</span></div>
+                                    <div class="avatar avatar-1"><img src="../img/card/card1.png" alt="Pavel Gerasimov" onerror="this.style.display='none'"><span class="avatar-initials">PG</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Pavel Gerasimov</div>
@@ -665,7 +701,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-2"><img src="img/reviews/svetlana-s.jpg" alt="Светлана С." onerror="this.style.display='none'"><span class="avatar-initials">СС</span></div>
+                                    <div class="avatar avatar-2"><img src="../img/card/card2.png" alt="Светлана С." onerror="this.style.display='none'"><span class="avatar-initials">СС</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Светлана С.</div>
@@ -680,7 +716,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-3"><img src="img/reviews/ekaterina-she.jpg" alt="Екатерина Ше" onerror="this.style.display='none'"><span class="avatar-initials">ЕШ</span></div>
+                                    <div class="avatar avatar-3"><img src="../img/card/card3.png" alt="Екатерина Ше" onerror="this.style.display='none'"><span class="avatar-initials">ЕШ</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Екатерина Ше</div>
@@ -695,7 +731,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-1"><img src="img/reviews/ivan-petrov.jpg" alt="Иван Петров" onerror="this.style.display='none'"><span class="avatar-initials">ИП</span></div>
+                                    <div class="avatar avatar-1"><img src="../img/card/card1.png" alt="Иван Петров" onerror="this.style.display='none'"><span class="avatar-initials">ИП</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Иван Петров</div>
@@ -709,7 +745,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-2"><img src="img/reviews/maria-sidorova.jpg" alt="Мария Сидорова" onerror="this.style.display='none'"><span class="avatar-initials">МС</span></div>
+                                    <div class="avatar avatar-2"><img src="../img/card/card2.png" alt="Мария Сидорова" onerror="this.style.display='none'"><span class="avatar-initials">МС</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Мария Сидорова</div>
@@ -723,7 +759,7 @@
 
                             <div class="review-card" onclick="openYandex()">
                                 <div class="card-header">
-                                    <div class="avatar avatar-3"><img src="img/reviews/alexander-ivanov.jpg" alt="Александр Иванов" onerror="this.style.display='none'"><span class="avatar-initials">АИ</span></div>
+                                    <div class="avatar avatar-3"><img src="../img/card/card3.png" alt="Александр Иванов" onerror="this.style.display='none'"><span class="avatar-initials">АИ</span></div>
                                     <div class="author-block">
                                         <div class="stars small">★★★★★</div>
                                         <div class="author">Александр Иванов</div>

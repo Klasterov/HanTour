@@ -1,4 +1,4 @@
-const allTags = [
+const DEFAULT_TAGS = [
     "Речные прогулки Казани",
     "Экскурсии по ночной Казани",
     "Групповые экскурсии",
@@ -15,13 +15,14 @@ const allTags = [
     "Старо-Татарская слобода",
     "Речная прогулка ночью",
     "Экскурсия в Свияжск"
-  ];
+];
+
+let allTags = DEFAULT_TAGS;
 
   window.openYandex = function() {
     window.open('https://yandex.ru/maps', '_blank');
   };
 
-  // Booking modal functions
   window.doSubmit = function() {
     const overlay = document.getElementById('overlay');
     if (overlay) {
@@ -31,7 +32,6 @@ const allTags = [
     alert('Спасибо! Ваша заявка отправлена. Мы свяжемся с вами в ближайшее время.');
   };
 
-  // Initialize booking modal when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initBookingModal);
   } else {
@@ -163,7 +163,19 @@ const allTags = [
   const VISIBLE_COUNT = 11;
   let expanded = false;
 
+  (async () => { try {
   try {
+    const res = await fetch("/api/categories");
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.categories) && data.categories.length > 0) {
+        allTags = data.categories;
+      }
+    }
+  } catch (err) {
+    console.warn("Бекенд недоступен, используются дефолтные категории:", err);
+  }
+
   const wrapper = document.getElementById('tagsWrapper');
   const tagsModal = document.getElementById('tagsModal');
   const tagsModalClose = document.getElementById('tagsModalClose');
@@ -187,7 +199,6 @@ const allTags = [
   function render() {
     wrapper.innerHTML = '';
 
-    // On mobile, add "More" button first
     if (isMobile() && allTags.length > VISIBLE_COUNT) {
       const more = document.createElement('span');
       more.className = 'tag tag-more';
@@ -201,7 +212,6 @@ const allTags = [
       wrapper.appendChild(more);
     }
 
-    // Then add tags
     allTags.forEach((text, i) => {
       const tag = document.createElement('span');
       tag.className = 'tag';
@@ -212,7 +222,6 @@ const allTags = [
       wrapper.appendChild(tag);
     });
 
-    // On desktop, add "More" button at the end
     if (!isMobile() && allTags.length > VISIBLE_COUNT) {
       const more = document.createElement('span');
       more.className = 'tag tag-more';
@@ -228,7 +237,6 @@ const allTags = [
 
   render();
 
-  // Close modal handlers
   if (tagsModalClose) {
     tagsModalClose.addEventListener('click', () => {
       tagsModal.classList.remove('open');
@@ -245,7 +253,6 @@ const allTags = [
     });
   }
 
-  // Categories UX: horizontal scrolling + navigate to catalog + full list modal.
   wrapper.addEventListener('wheel', (e) => {
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       wrapper.scrollLeft += e.deltaY;
@@ -261,7 +268,6 @@ const allTags = [
     window.location.href = `catalog.html?category=${encodeURIComponent(category)}`;
   });
 
-  // Tags modal click handler
   if (tagsModalContent) {
     tagsModalContent.addEventListener('click', (e) => {
       const tag = e.target.closest('.tag');
@@ -287,13 +293,12 @@ const allTags = [
   }
 
   const catsModal = document.getElementById('allCategoriesModal');
-  const catsList = document.getElementById('allCategoriesList');
   const catsClose = document.getElementById('allCategoriesClose');
-  if (catsModal && catsList && catsClose) {
-    catsList.innerHTML = allTags.map((tag) => `<button type="button" class="cats-modal-item">${tag}</button>`).join('');
-    catsList.querySelectorAll('.cats-modal-item').forEach((btn) => {
+  if (catsModal && catsClose) {
+    // Handle clicks on category items
+    catsModal.querySelectorAll('.cats-modal-item').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const category = (btn.textContent || '').trim();
+        const category = (btn.dataset.category || btn.textContent || '').trim();
         window.location.href = `catalog.html?category=${encodeURIComponent(category)}`;
       });
     });
@@ -308,7 +313,7 @@ const allTags = [
     });
   }
 
-  const PHOTOS = [
+  let PHOTOS = [
     {
       src:    "../img/excursion/1.png",
       srcset: "../img/excursion/1.png 1x, ../img/excursion/1@2x.png 2x",
@@ -330,6 +335,22 @@ const allTags = [
       alt:    "Экскурсия — фото 4"
     },
   ];
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const excursionId = params.get("id");
+    if (excursionId) {
+      const res = await fetch(`/api/excursion/${excursionId}/photos`);
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data.photos) && data.photos.length > 0) {
+          PHOTOS = data.photos;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Бекенд недоступен, используются дефолтные фото экскурсии:", err);
+  }
 
   const VISIBLE = 4;
   let cur = 0, offset = 0;
@@ -375,7 +396,6 @@ const allTags = [
       d.addEventListener('click', () => goTo(ri));
       thumbsRow.appendChild(d);
     });
-    // arrow if more photos exist
     if (PHOTOS.length > VISIBLE) {
       const btn = document.createElement('button');
       btn.className = 'th-arrow';
@@ -458,7 +478,7 @@ const allTags = [
     alert('Заявка принята! Мы свяжемся с вами в ближайшее время.');
     closeModal();
   }
-  } catch (_e) {}
+  } catch (_e) { console.error('Gallery init error:', _e); } })();
 
   window.doSubmit = function() {
     alert('Заявка принята! Мы свяжемся с вами в ближайшее время.');
@@ -684,7 +704,6 @@ const allTags = [
 })();
 
 (function() {
-  // Move "included / not included" block under reviews on mobile.
   const infoBlock = document.querySelector('.exc-main-right .info-block');
   const tabsOuter = document.querySelector('.exc-tabs-outer');
   const rightCol = document.querySelector('.exc-main-right');
