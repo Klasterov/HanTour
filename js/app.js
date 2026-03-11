@@ -166,51 +166,53 @@ const DEFAULT_EXCURSIONS = [
 
 async function fetchSchedule(date) {
   const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-  const res = await fetch(`/api/schedule?date=${iso}`);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  if (!Array.isArray(data.schedule)) throw new Error("Invalid response");
-  return data.schedule;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4000);
+  try {
+    const res = await fetch(`/api/schedule?date=${iso}`, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data.schedule)) throw new Error("Invalid response");
+    return data.schedule;
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
-async function renderSchedule() {
-  const day   = currentDate.getDate().toString().padStart(2, "0");
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
-  const year  = currentDate.getFullYear();
+const ARROW_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.4297 5.93005L19.4997 12.0001L13.4297 18.0701" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 12H19.33" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
-  selectedDateText.textContent = `${day}.${month}.${year}, ${daysRu[currentDate.getDay()]}`;
-
-  let items = DEFAULT_EXCURSIONS;
-  try {
-    const fromApi = await fetchSchedule(currentDate);
-    if (fromApi.length > 0) items = fromApi;
-  } catch (err) {
-    console.warn("Бекенд недоступен, используются дефолтные данные расписания:", err);
-  }
-
+function buildScheduleItems(items) {
   scheduleList.innerHTML = "";
-
   items.forEach((exc, i) => {
     const hour = exc.time || `${(9 + i).toString().padStart(2, "0")}:00`;
     const item = document.createElement("div");
     item.className = "schedule-item";
     item.style.cursor = "pointer";
     item.onclick = () => window.location.href = `excursion.html?id=${exc.id}`;
-
     item.innerHTML = `
       <div class="time">${hour}</div>
       <div class="schedule-item-info">
         <div class="schedule-title">${exc.title}</div>
         <div class="schedule-meta">${exc.type}, ${exc.duration}</div>
       </div>
-      <div class="price">от ${exc.price} ₽ <span class="schedule-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.4297 5.93005L19.4997 12.0001L13.4297 18.0701" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4.5 12H19.33" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg></span></div>
+      <div class="price">от ${exc.price} ₽ <span class="schedule-arrow">${ARROW_SVG}</span></div>
     `;
-
     scheduleList.appendChild(item);
   });
+}
+
+function renderSchedule() {
+  const day   = currentDate.getDate().toString().padStart(2, "0");
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+  const year  = currentDate.getFullYear();
+
+  selectedDateText.textContent = `${day}.${month}.${year}, ${daysRu[currentDate.getDay()]}`;
+
+  buildScheduleItems(DEFAULT_EXCURSIONS);
+
+  fetchSchedule(currentDate)
+    .then(fromApi => { if (fromApi.length > 0) buildScheduleItems(fromApi); })
+    .catch(err => console.warn("Бекенд недоступен, используются дефолтные данные расписания:", err));
 }
 
 monthEl.onclick = ()=>{
@@ -242,11 +244,13 @@ document.getElementById("nextMonth").onclick=()=>{
 
 document.getElementById("prevDay").onclick=()=>{
   currentDate.setDate(currentDate.getDate()-1);
+  selectedDate = new Date(currentDate);
   renderCalendar();
   renderSchedule();
 };
 document.getElementById("nextDay").onclick=()=>{
   currentDate.setDate(currentDate.getDate()+1);
+  selectedDate = new Date(currentDate);
   renderCalendar();
   renderSchedule();
 };
@@ -389,33 +393,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   ];
 
   let photos = DEFAULT_PHOTOS;
-  try {
-    const res = await fetch("/api/gallery");
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data.photos) && data.photos.length > 0) {
-        photos = data.photos;
-      }
-    }
-  } catch (err) {
-    console.warn("Бекенд недоступен, используются дефолтные фото галереи:", err);
-  }
-
   let index = 0;
   let autoplayTimer = null;
   let fadeTimer = null;
   const AUTOPLAY_DELAY = 2200;
   const FADE_DURATION = 180;
 
-  totalPhotosEl.textContent = photos.length.toString().padStart(2, "0");
-
   function renderGallery() {
     image.src = photos[index].src;
     image.srcset = photos[index].srcset;
-
-    currentIndexEl.textContent = (index + 1)
-      .toString()
-      .padStart(2, "0");
+    currentIndexEl.textContent = (index + 1).toString().padStart(2, "0");
+    totalPhotosEl.textContent = photos.length.toString().padStart(2, "0");
   }
 
   function updateGallery() {
@@ -464,8 +452,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     else startAutoplay();
   });
 
+  // Сразу показываем дефолтные фото
   renderGallery();
   startAutoplay();
+
+  // Фоново грузим с сервера и обновляем если пришли данные
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch("/api/gallery", { signal: controller.signal });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.photos) && data.photos.length > 0) {
+        photos = data.photos;
+        index = 0;
+        renderGallery();
+      }
+    }
+  } catch (err) {
+    console.warn("Бекенд недоступен, используются дефолтные фото галереи:", err);
+  }
 
 });
 

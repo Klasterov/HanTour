@@ -164,17 +164,6 @@ let allTags = DEFAULT_TAGS;
   let expanded = false;
 
   (async () => { try {
-  try {
-    const res = await fetch("/api/categories");
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data.categories) && data.categories.length > 0) {
-        allTags = data.categories;
-      }
-    }
-  } catch (err) {
-    console.warn("Бекенд недоступен, используются дефолтные категории:", err);
-  }
 
   const wrapper = document.getElementById('tagsWrapper');
   const tagsModal = document.getElementById('tagsModal');
@@ -235,7 +224,21 @@ let allTags = DEFAULT_TAGS;
     }
   }
 
+  // Сразу рендерим дефолтные теги
   render();
+
+  // Фоново грузим категории с сервера и обновляем если пришли данные
+  const catController = new AbortController();
+  const catTimeout = setTimeout(() => catController.abort(), 4000);
+  fetch("/api/categories", { signal: catController.signal })
+    .then(res => { clearTimeout(catTimeout); return res.ok ? res.json() : null; })
+    .then(data => {
+      if (data && Array.isArray(data.categories) && data.categories.length > 0) {
+        allTags = data.categories;
+        render();
+      }
+    })
+    .catch(err => console.warn("Бекенд недоступен, используются дефолтные категории:", err));
 
   if (tagsModalClose) {
     tagsModalClose.addEventListener('click', () => {
