@@ -34,8 +34,10 @@ let allTags = DEFAULT_TAGS;
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initBookingModal);
+    document.addEventListener('DOMContentLoaded', initBookingCounters);
   } else {
     initBookingModal();
+    initBookingCounters();
   }
 
   function initBookingModal() {
@@ -80,6 +82,68 @@ let allTags = DEFAULT_TAGS;
         }
       });
     }
+  }
+
+  function initBookingCounters() {
+    const adultInput = document.getElementById('bookingAdults');
+    const childInput = document.getElementById('bookingChildren');
+    const totalEl = document.getElementById('bookingGuestsTotal');
+    const submitBtn = document.getElementById('bookingSubmit');
+    const adultPriceEl = document.getElementById('bookingAdultPrice');
+    const childPriceEl = document.getElementById('bookingChildPrice');
+
+    if (!adultInput || !childInput || !totalEl || !submitBtn) return;
+
+    function getPriceByLabel(labelPart) {
+      const rows = Array.from(document.querySelectorAll('.price-block .p-row'));
+      const row = rows.find((item) => {
+        const nameEl = item.querySelector('.pn');
+        return nameEl && nameEl.textContent.toLowerCase().includes(labelPart);
+      });
+
+      return row ? row.querySelector('.pv')?.textContent.trim() : '';
+    }
+
+    if (adultPriceEl) {
+      const adultPrice = getPriceByLabel('взросл');
+      if (adultPrice) adultPriceEl.textContent = adultPrice + ' за билет';
+    }
+
+    if (childPriceEl) {
+      const childPrice = getPriceByLabel('дети');
+      if (childPrice) childPriceEl.textContent = childPrice + ' за билет';
+    }
+
+    function updateBookingTotal() {
+      const adults = Number(adultInput.value) || 0;
+      const children = Number(childInput.value) || 0;
+      const total = adults + children;
+
+      totalEl.textContent = String(total);
+      submitBtn.disabled = total === 0;
+      submitBtn.setAttribute('aria-disabled', String(total === 0));
+    }
+
+    document.querySelectorAll('[data-counter]').forEach((counter) => {
+      const input = counter.querySelector('input');
+      if (!input) return;
+
+      counter.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-counter-action]');
+        if (!button) return;
+
+        const action = button.getAttribute('data-counter-action');
+        const currentValue = Number(input.value) || 0;
+        const nextValue = action === 'increase'
+          ? currentValue + 1
+          : Math.max(0, currentValue - 1);
+
+        input.value = String(nextValue);
+        updateBookingTotal();
+      });
+    });
+
+    updateBookingTotal();
   }
 
   (function resetBodyOverflowOnLoad() {

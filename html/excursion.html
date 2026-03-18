@@ -1414,8 +1414,38 @@
         <select><option>12:00</option><option>14:00</option><option>18:00</option></select>
       </div>
     </div>
-    <div class="frow"><label>Количество человек</label><input type="number" min="1" value="1"></div>
-    <button class="btn-submit" onclick="doSubmit()">Отправить заявку</button>
+    <div class="frow">
+      <label>Количество гостей</label>
+      <div class="booking-counter-list">
+        <div class="booking-counter">
+          <div class="booking-counter-copy">
+            <span class="booking-counter-title">Взрослые</span>
+            <span class="booking-counter-note" id="bookingAdultPrice">Цена уточняется</span>
+          </div>
+          <div class="booking-stepper" data-counter>
+            <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество взрослых">−</button>
+            <input id="bookingAdults" type="number" min="0" value="1" readonly aria-label="Количество взрослых">
+            <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество взрослых">+</button>
+          </div>
+        </div>
+        <div class="booking-counter">
+          <div class="booking-counter-copy">
+            <span class="booking-counter-title">Дети</span>
+            <span class="booking-counter-note" id="bookingChildPrice">Цена уточняется</span>
+          </div>
+          <div class="booking-stepper" data-counter>
+            <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество детей">−</button>
+            <input id="bookingChildren" type="number" min="0" value="0" readonly aria-label="Количество детей">
+            <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество детей">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="booking-total" aria-live="polite">
+        <span>Всего гостей</span>
+        <strong id="bookingGuestsTotal">1</strong>
+      </div>
+    </div>
+    <button class="btn-submit" id="bookingSubmit" type="button" onclick="doSubmit()">Отправить заявку</button>
   </div>
 </div>
 

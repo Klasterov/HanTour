@@ -598,6 +598,93 @@ body {
   gap: 10px;
 }
 
+.booking-modal .booking-counter-list {
+  display: grid;
+  gap: 10px;
+}
+
+.booking-modal .booking-counter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+
+.booking-modal .booking-counter-copy {
+  display: grid;
+  gap: 3px;
+}
+
+.booking-modal .booking-counter-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+}
+
+.booking-modal .booking-counter-note {
+  font-size: 12px;
+  line-height: 1.35;
+  color: #6b7280;
+}
+
+.booking-modal .booking-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.booking-modal .booking-stepper-btn {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #d9dee7;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+.booking-modal .booking-stepper-btn:hover {
+  border-color: #4caf7d;
+  background: #f3fbf6;
+  transform: translateY(-1px);
+}
+
+.booking-modal .booking-stepper-btn:active {
+  transform: translateY(0);
+}
+
+.booking-modal .booking-stepper input {
+  width: 54px;
+  min-width: 54px;
+  padding: 0;
+  text-align: center;
+  font-weight: 800;
+}
+
+.booking-modal .booking-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f0fdf4;
+  color: #166534;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.booking-modal .booking-total strong {
+  font-size: 16px;
+}
+
 .booking-modal .frow label {
   display: block;
   margin-bottom: 4px;
@@ -661,6 +748,14 @@ body {
   box-shadow: 0 9px 16px rgba(62, 170, 116, 0.24);
 }
 
+.booking-modal .btn-submit:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.12);
+  opacity: 0.65;
+  box-shadow: none;
+  transform: none;
+}
+
 @media (max-width: 640px) {
   .overlay {
     padding: 8px;
@@ -687,6 +782,21 @@ body {
   .booking-modal .booking-inline {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .booking-modal .booking-counter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .booking-modal .booking-stepper {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .booking-modal .booking-stepper input {
+    flex: 1;
+    max-width: none;
   }
 }
 
