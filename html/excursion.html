@@ -1402,50 +1402,141 @@
 
 <!-- BOOKING MODAL -->
 <div class="overlay" id="overlay">
-  <div class="booking-modal">
-    <button class="m-close" id="mClose">✕</button>
-    <h2>Забронировать экскурсию</h2>
-    <p class="msub">«Огни ночной Казани» — заполните форму, мы свяжемся с вами</p>
-    <div class="frow"><label>Ваше имя</label><input type="text" placeholder="Иван Иванов"></div>
-    <div class="frow"><label>Телефон</label><input type="tel" placeholder="+7 (___) ___-__-__"></div>
-    <div class="booking-inline">
-      <div class="frow"><label>Дата экскурсии</label><input type="date"></div>
-      <div class="frow"><label>Время</label>
-        <select><option>12:00</option><option>14:00</option><option>18:00</option></select>
-      </div>
-    </div>
-    <div class="frow">
-      <label>Количество гостей</label>
-      <div class="booking-counter-list">
-        <div class="booking-counter">
-          <div class="booking-counter-copy">
-            <span class="booking-counter-title">Взрослые</span>
-            <span class="booking-counter-note" id="bookingAdultPrice">Цена уточняется</span>
-          </div>
-          <div class="booking-stepper" data-counter>
-            <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество взрослых">−</button>
-            <input id="bookingAdults" type="number" min="0" value="1" readonly aria-label="Количество взрослых">
-            <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество взрослых">+</button>
+  <div class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+    <button class="m-close" id="mClose" type="button" aria-label="Закрыть">×</button>
+    <form class="booking-form" id="bookingForm" novalidate>
+      <h2 id="bookingModalTitle">Забронировать экскурсию</h2>
+      <p class="msub" id="bookingExcursionName">Экскурсия по вечернему городу «Огни ночной Казани»</p>
+
+      <div class="booking-grid">
+        <div class="booking-field">
+          <label for="bookingDate">Дата экскурсии <span class="booking-required">*</span></label>
+          <div class="booking-control booking-control--icon booking-control--date" id="bookingDateControl">
+            <input id="bookingDate" name="date" type="text" placeholder="Выберите дату" required readonly autocomplete="off" aria-haspopup="dialog" aria-expanded="false">
+            <span class="booking-control-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 2L8 5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M16 2V5" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3.5 9.08984L20.5 9.08984" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21 8.5L21 17C21 20 19.5 22 16 22L8 22C4.5 22 3 20 3 17L3 8.5C3 5.5 4.5 3.5 8 3.5L16 3.5C19.5 3.5 21 5.5 21 8.5Z" stroke="#292D32" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.6947 13.7002H15.7037" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.6947 16.7002H15.7037" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.9955 13.7002H12.0045" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.9955 16.7002H12.0045" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.29431 13.7002H8.30329" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.29431 16.7002H8.30329" stroke="#292D32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            </span>
+            <div class="booking-calendar-popover" id="bookingCalendarPopover" hidden>
+              <div class="booking-calendar" id="bookingCalendar" role="dialog" aria-label="Выбор даты экскурсии">
+                <div class="booking-calendar-head">
+                  <button class="booking-calendar-nav" id="bookingCalendarPrev" type="button" aria-label="Предыдущий месяц">‹</button>
+                  <div class="booking-calendar-title" id="bookingCalendarTitle">Март 2026</div>
+                  <button class="booking-calendar-nav" id="bookingCalendarNext" type="button" aria-label="Следующий месяц">›</button>
+                </div>
+                <div class="booking-calendar-weekdays" aria-hidden="true">
+                  <span>пн</span>
+                  <span>вт</span>
+                  <span>ср</span>
+                  <span>чт</span>
+                  <span>пт</span>
+                  <span>сб</span>
+                  <span>вс</span>
+                </div>
+                <div class="booking-calendar-grid" id="bookingCalendarGrid"></div>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="booking-counter">
-          <div class="booking-counter-copy">
-            <span class="booking-counter-title">Дети</span>
-            <span class="booking-counter-note" id="bookingChildPrice">Цена уточняется</span>
+
+        <div class="booking-field">
+          <label for="bookingName">Имя туриста <span class="booking-required">*</span></label>
+          <div class="booking-control">
+            <input id="bookingName" name="name" type="text" placeholder="Ваше имя" required>
           </div>
-          <div class="booking-stepper" data-counter>
-            <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество детей">−</button>
-            <input id="bookingChildren" type="number" min="0" value="0" readonly aria-label="Количество детей">
-            <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество детей">+</button>
+          <div class="booking-error" id="bookingNameError" hidden>Введите корректные данные</div>
+        </div>
+
+        <div class="booking-field">
+          <label for="bookingTime">Время экскурсии <span class="booking-required">*</span></label>
+          <div class="booking-control booking-control--icon booking-control--time" id="bookingTimeControl">
+            <input id="bookingTime" name="time" type="text" value="12:00" required readonly autocomplete="off" aria-haspopup="listbox" aria-expanded="false">
+            <span class="booking-control-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22 12C22 17.52 17.52 22 12 22C6.48 22 2 17.52 2 12C2 6.48 6.48 2 12 2C17.52 2 22 6.48 22 12Z" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15.7099 15.1798L12.6099 13.3298C12.0699 13.0098 11.6299 12.2398 11.6299 11.6098V7.50977" stroke="#292D32" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+            </span>
+            <div class="booking-time-popover" id="bookingTimePopover" hidden>
+              <div class="booking-time-list" id="bookingTimeList" role="listbox" aria-label="Выбор времени экскурсии"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="booking-field">
+          <label for="bookingPhone">Ваш телефон <span class="booking-required">*</span></label>
+          <div class="booking-control">
+            <input id="bookingPhone" name="phone" type="tel" inputmode="tel" placeholder="+7 (900) 000-00-00" required>
+          </div>
+          <div class="booking-error" id="bookingPhoneError" hidden>Введите корректные данные</div>
+        </div>
+      </div>
+
+      <div class="booking-section">
+        <h3>Количество человек</h3>
+        <div class="booking-counter-grid">
+          <div class="booking-counter-card">
+            <span class="booking-counter-title">Взрослые <span class="booking-required">*</span></span>
+            <div class="booking-stepper" data-counter data-counter-key="adult">
+              <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество взрослых">−</button>
+              <input id="bookingAdults" type="number" min="0" value="1" readonly aria-label="Количество взрослых">
+              <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество взрослых">+</button>
+            </div>
+          </div>
+
+          <div class="booking-counter-card">
+            <span class="booking-counter-title">Пенсионеры</span>
+            <div class="booking-stepper" data-counter data-counter-key="senior">
+              <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество пенсионеров">−</button>
+              <input id="bookingSeniors" type="number" min="0" value="0" readonly aria-label="Количество пенсионеров">
+              <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество пенсионеров">+</button>
+            </div>
+          </div>
+
+          <div class="booking-counter-card">
+            <span class="booking-counter-title">Дети с 7 до 14 лет</span>
+            <div class="booking-stepper" data-counter data-counter-key="child">
+              <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество детей от 7 до 14 лет">−</button>
+              <input id="bookingChildren" type="number" min="0" value="0" readonly aria-label="Количество детей от 7 до 14 лет">
+              <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество детей от 7 до 14 лет">+</button>
+            </div>
+          </div>
+
+          <div class="booking-counter-card">
+            <span class="booking-counter-title">Дети до 7 лет бесплатно</span>
+            <div class="booking-stepper" data-counter data-counter-key="childFree">
+              <button class="booking-stepper-btn" type="button" data-counter-action="decrease" aria-label="Уменьшить количество детей до 7 лет">−</button>
+              <input id="bookingChildrenFree" type="number" min="0" value="0" readonly aria-label="Количество детей до 7 лет">
+              <button class="booking-stepper-btn" type="button" data-counter-action="increase" aria-label="Увеличить количество детей до 7 лет">+</button>
+            </div>
           </div>
         </div>
       </div>
+
       <div class="booking-total" aria-live="polite">
-        <span>Всего гостей</span>
-        <strong id="bookingGuestsTotal">1</strong>
+        <span>Итого:</span>
+        <strong id="bookingTotalPrice">1400 ₽</strong>
       </div>
-    </div>
-    <button class="btn-submit" id="bookingSubmit" type="button" onclick="doSubmit()">Отправить заявку</button>
+
+      <label class="booking-policy">
+        <input id="bookingPolicy" class="booking-policy-check" type="checkbox" name="policy">
+        <span>Я подтверждаю, что согласен с условиями <a href="#">политики обработки</a> персональных данных.</span>
+      </label>
+
+      <button class="btn-submit" id="bookingSubmit" type="submit" disabled>Отправить заявку</button>
+    </form>
   </div>
 </div>
 
