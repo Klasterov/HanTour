@@ -1396,28 +1396,84 @@ const bookingCalendarState = {
 })();
 
 (function() {
-  const tabs = document.querySelectorAll('.exc-tab');
+  const tabs = Array.from(document.querySelectorAll('.exc-tab'));
   const sections = ['sec-route','sec-about','sec-info','sec-departure','sec-similar','sec-reviews','excTourReviews'];
+  if (!tabs.length) return;
+
+  function getScrollOffset() {
+    const tabsOuter = document.querySelector('.exc-tabs-outer');
+    return (tabsOuter?.offsetHeight || 58) + 10;
+  }
+
+  function scrollToSection(sectionId, behavior = 'smooth') {
+    const section = document.getElementById(sectionId);
+    if (!section) return false;
+
+    const top = section.getBoundingClientRect().top + window.scrollY - getScrollOffset();
+    window.scrollTo({ top, behavior });
+
+    if (window.location.hash !== `#${sectionId}`) {
+      history.replaceState(null, '', `#${sectionId}`);
+    }
+
+    return true;
+  }
+
+  function syncActiveTab() {
+    let current = sections[0];
+    const threshold = window.scrollY + getScrollOffset() + 16;
+
+    sections.forEach(id => {
+      const section = document.getElementById(id);
+      if (section && threshold >= section.offsetTop) current = id;
+    });
+
+    const activeTarget = current === 'sec-reviews' ? 'excTourReviews' : current;
+    tabs.forEach(tab => tab.classList.toggle('active', tab.getAttribute('data-target') === activeTarget));
+  }
 
   tabs.forEach(tab => {
     tab.addEventListener('click', function(e) {
       e.preventDefault();
       const id = this.getAttribute('data-target');
-      const el = document.getElementById(id);
-      if (!el) return;
-      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 58, behavior: 'smooth' });
+      if (!id) return;
+      scrollToSection(id);
+      syncActiveTab();
     });
   });
 
-  window.addEventListener('scroll', function() {
-    let cur = sections[0];
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el && window.scrollY >= el.offsetTop - 80) cur = id;
+  syncActiveTab();
+  window.addEventListener('scroll', syncActiveTab, { passive: true });
+
+  if (window.location.hash) {
+    const hashTarget = decodeURIComponent(window.location.hash.slice(1));
+    if (sections.includes(hashTarget)) {
+      window.requestAnimationFrame(() => {
+        scrollToSection(hashTarget, 'auto');
+        syncActiveTab();
+      });
+    }
+  }
+})();
+
+(function() {
+  const routeItems = document.querySelectorAll('.route-item[data-route-link]');
+  if (!routeItems.length) return;
+
+  routeItems.forEach(item => {
+    const openRouteLink = () => {
+      const link = item.getAttribute('data-route-link');
+      if (!link) return;
+      window.location.href = link;
+    };
+
+    item.addEventListener('click', openRouteLink);
+    item.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      openRouteLink();
     });
-    const activeTarget = cur === 'sec-reviews' ? 'excTourReviews' : cur;
-    tabs.forEach(t => t.classList.toggle('active', t.getAttribute('data-target') === activeTarget));
-  }, { passive: true });
+  });
 })();
 
 (function() {

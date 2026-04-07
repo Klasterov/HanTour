@@ -1413,11 +1413,12 @@ body {
   border-radius: 12px;
   padding: 12px 12px 10px;
   cursor: pointer;
-  transition: border-color 0.16s ease;
+  transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
   min-height: 92px;
   display: flex;
   flex-direction: column;
   gap: 9px;
+  will-change: transform;
 }
 .route-item::after {
   content: "";
@@ -1427,14 +1428,38 @@ body {
   width: 12px;
   border-top: 2px dotted #efd126;
 }
-.route-item:hover {
-  border-color: #debe1e;
+.route-item:hover,
+.route-item:focus-visible {
+  background: #17AA00;
+  border-color: #17aa00;
+  box-shadow: 0 14px 28px rgba(23, 170, 0, 0.18);
+  transform: translateY(-2px);
+  z-index: 2;
+  outline: none;
 }
-.route-item:hover .route-num {
+.route-item:hover::after,
+.route-item:focus-visible::after {
+  border-top-color: #17aa00;
+}
+.route-item:hover .route-num,
+.route-item:focus-visible .route-num {
   background: #17AA00;
   color: #fff;
 }
-.route-item:hover .route-name { color: #1f1f1f; }
+.route-item:hover .route-name,
+.route-item:hover .route-label-text,
+.route-item:focus-visible .route-name,
+.route-item:focus-visible .route-label-text {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1.5px;
+}
+.route-item:hover .route-special-icon,
+.route-item:focus-visible .route-special-icon {
+  background: #fff;
+  color: #17AA00;
+}
 .route-num {
   width: 22px; height: 22px;
   background: #17aa00;
@@ -1467,12 +1492,14 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background 0.18s, color 0.18s;
 }
 .route-label-text {
   font-size: 16px;
   line-height: 24px;
   color: black;
   font-weight: 600;
+  transition: color 0.18s;
 }
 .route-break::after {
   display: none;
@@ -1530,12 +1557,12 @@ body {
   }
 
   .route-item:not(.route-special):hover .route-num {
-    background: #f30000;
-    color: #fff;
+    background: #fff;
+    color: #17aa00;
   }
 
   .route-item:not(.route-special):hover .route-name {
-    color: #17aa00;
+    color: #fff;
     text-decoration: underline;
     text-underline-offset: 2px;
     text-decoration-thickness: 1.5px;
