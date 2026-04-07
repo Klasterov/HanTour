@@ -449,6 +449,11 @@ hr {
     font-size: 18px;
 }
 
+.logo a {
+    display: inline-flex;
+    align-items: center;
+}
+
 .nav-items.address {
     display: flex;
     align-items: center;
@@ -465,6 +470,19 @@ hr {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+}
+
+.nav-top > .logo,
+.nav-top > .nav-item {
+    transform-origin: center left;
+    transition: transform 0.18s ease, color 0.18s ease;
+}
+
+.nav-top > .logo:hover,
+.nav-top > .logo:focus-within,
+.nav-top > .nav-item:hover,
+.nav-top > .nav-item:focus-within {
+    transform: scale(1.06);
 }
 
 .address {

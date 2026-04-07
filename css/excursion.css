@@ -460,6 +460,67 @@ body {
   }
   .btn-green svg { width: 17px; height: 17px; flex-shrink: 0; }
 
+  .sidebar-request {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 12px 14px;
+    margin-top: 10px;
+  }
+
+  .sidebar-request-label {
+    padding-top: 20px;
+    font-size: 16px;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #111111;
+    white-space: nowrap;
+  }
+
+  .sidebar-request-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .sidebar-request-link {
+    display: grid;
+    justify-items: center;
+    text-decoration: none;
+    color: #6b6b6b;
+    transition: transform 0.18s ease;
+  }
+
+  .sidebar-request-link:hover,
+  .sidebar-request-link:focus-visible {
+    transform: translateY(-2px);
+    outline: none;
+  }
+
+  .sidebar-request-icon {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 18px;
+    overflow: hidden;
+  }
+
+  .sidebar-request-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .sidebar-request-text {
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #6b7280;
+    text-align: center;
+  }
+
   /* Compact info cards in right sidebar (as in mockup) */
   .sidebar .info-block {
     display: grid;
@@ -1366,6 +1427,8 @@ body {
 }
 .exc-tabs::-webkit-scrollbar { display: none; }
 .exc-tab {
+  display: inline-flex;
+  align-items: center;
   padding: 14px 22px;
   font-size: 14px;
   font-weight: 600;
@@ -1374,9 +1437,14 @@ body {
   white-space: nowrap;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
-  transition: color 0.18s, border-color 0.18s;
+  transform-origin: center bottom;
+  transition: color 0.18s, border-color 0.18s, transform 0.18s ease;
 }
-.exc-tab:hover { color: #17AA00; }
+.exc-tab:hover,
+.exc-tab:focus-visible {
+  color: #17AA00;
+  transform: translateY(-1px) scale(1.06);
+}
 .exc-tab.active { color: black; border-bottom: 4px solid #17AA00; }
 
 /* ══════════════════════════════════════════
@@ -2538,6 +2606,25 @@ body {
     margin-bottom: 8px;
     min-height: 42px;
     border-radius: 8px;
+  }
+
+  .sidebar-request {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .sidebar-request-label {
+    padding-top: 0;
+  }
+
+  .sidebar-request-grid {
+    gap: 10px;
+  }
+
+  .sidebar-request-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
   }
 
   .page {
