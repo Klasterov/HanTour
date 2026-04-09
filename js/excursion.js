@@ -1527,12 +1527,34 @@ const bookingCalendarState = {
   const toggle = document.getElementById('aboutToggle');
   const content = document.getElementById('aboutContent');
   const label  = document.getElementById('aboutToggleText');
+  let savedScrollY = null;
   if (!toggle || !content || !label) return;
+
   toggle.addEventListener('click', function() {
+    const wasOpen = content.classList.contains('open');
+    if (!wasOpen) {
+      savedScrollY = window.scrollY;
+    }
+
     const open = content.classList.toggle('open');
     content.classList.toggle('collapsed', !open);
     label.textContent = open ? 'Скрыть' : 'Читать полностью';
     toggle.classList.toggle('open', open);
+
+    if (!open && savedScrollY !== null) {
+      const targetY = savedScrollY;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          window.scrollTo({
+            top: targetY,
+            behavior: reduceMotion ? 'auto' : 'smooth'
+          });
+          savedScrollY = null;
+        });
+      });
+    }
   });
 })();
 
