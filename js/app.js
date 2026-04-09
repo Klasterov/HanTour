@@ -480,19 +480,42 @@ document.addEventListener("DOMContentLoaded", async () => {
 const content = document.getElementById('aboutContent');
   const toggle = document.getElementById('aboutToggle');
   const toggleText = document.getElementById('aboutToggleText');
-  const arrow = toggle.querySelector('.arrow');
+  const arrow = toggle?.querySelector('.arrow');
+  let savedScrollY = null;
 
-  toggle.addEventListener('click', () => {
-    content.classList.toggle('collapsed');
+  if (content && toggle && toggleText) {
+    toggle.addEventListener('click', () => {
+      const isCollapsed = content.classList.contains('collapsed');
+      if (isCollapsed) {
+        savedScrollY = window.scrollY;
+      }
 
-    if (content.classList.contains('collapsed')) {
-      toggleText.textContent = 'Читать полностью';
-      arrow.style.transform = 'rotate(0deg)';
-    } else {
-      toggleText.textContent = 'Скрыть';
-      arrow.style.transform = 'rotate(180deg)';
-    }
-  });
+      content.classList.toggle('collapsed');
+
+      if (content.classList.contains('collapsed')) {
+        toggleText.textContent = 'Читать полностью';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
+
+        if (savedScrollY !== null) {
+          const targetY = savedScrollY;
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.scrollTo({
+                top: targetY,
+                behavior: reduceMotion ? 'auto' : 'smooth'
+              });
+              savedScrollY = null;
+            });
+          });
+        }
+      } else {
+        toggleText.textContent = 'Скрыть';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      }
+    });
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
   return;
