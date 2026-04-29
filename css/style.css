@@ -1187,6 +1187,9 @@ hr {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: stretch;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .calendar-dates {
@@ -1203,8 +1206,13 @@ hr {
 }
 
 .calendar-dates .active {
-    background: #16A34A;
-    color: white;
+    background: #16A34A !important;
+    color: white !important;
+}
+
+.calendar-dates .active:active {
+    background: #16A34A !important;
+    color: white !important;
 }
 
 .calendar-dates .muted {
@@ -3262,12 +3270,18 @@ section.gallery .gallery-arrow:disabled {
 
     .calendar-dates span {
         font-size: 14px;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .calendar-dates .active {
-        background: #17AA00;
-        color: white;
+        background: #16A34A !important;
+        color: white !important;
         border-radius: 8px;
+    }
+
+    .calendar-dates .active:active {
+        background: #16A34A !important;
+        color: white !important;
     }
 
     .full-schedule {
@@ -4601,10 +4615,18 @@ section.gallery .gallery-arrow:disabled {
         border-radius: 10px;
         justify-content: center;
         align-items: center;
+        -webkit-tap-highlight-color: transparent;
     }
 
     .calendar-dates .active {
+        background: #16A34A !important;
+        color: white !important;
         border-radius: 10px;
+    }
+
+    .calendar-dates .active:active {
+        background: #16A34A !important;
+        color: white !important;
     }
 
     .full-schedule {
