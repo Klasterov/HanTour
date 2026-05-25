@@ -2,7 +2,6 @@
 
 html {
     overflow-x: clip;
-    scrollbar-gutter: stable;
 }
 
 body {
@@ -453,11 +452,6 @@ hr {
     font-size: 18px;
 }
 
-.logo a {
-    display: inline-flex;
-    align-items: center;
-}
-
 .nav-items.address {
     display: flex;
     align-items: center;
@@ -474,19 +468,6 @@ hr {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-}
-
-.nav-top > .logo,
-.nav-top > .nav-item {
-    transform-origin: center left;
-    transition: transform 0.18s ease, color 0.18s ease;
-}
-
-.nav-top > .logo:hover,
-.nav-top > .logo:focus-within,
-.nav-top > .nav-item:hover,
-.nav-top > .nav-item:focus-within {
-    transform: scale(1.06);
 }
 
 .address {
@@ -669,7 +650,7 @@ hr {
 
 .call-modal-form input {
     width: 100%;
-    box-sizing: border-box !important;
+    box-sizing: border-box;
     padding: 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -704,7 +685,6 @@ hr {
 
 .call-modal-form .submit-btn {
     width: 100%;
-    box-sizing: border-box !important;
 }
 
 @media (max-width: 768px) {
@@ -869,7 +849,6 @@ hr {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    transform: unset;
 }
 
 .modal-content {
@@ -926,13 +905,8 @@ hr {
 
 .card-image {
     position: relative;
+    height: stretch;
     overflow: hidden;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-}
-
-.gallery .card-image {
-    height: 100%;
 }
 
 .card-image img {
@@ -1030,7 +1004,7 @@ hr {
     font-size: 20px;
 }
 
-.book-btn_new, .book-btn {
+.book-btn {
     width: 100%;
     padding: 12px 20px;
     background: #17AA00;
@@ -1045,7 +1019,7 @@ hr {
     margin-bottom: 10px;
 }
 
-.book-btn_new:hover, .book-btn:hover {
+.book-btn:hover {
     background: white;
     color: #17AA00;
     border: 2px solid #17AA00;
@@ -1192,9 +1166,6 @@ hr {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: stretch;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
 }
 
 .calendar-dates {
@@ -1211,13 +1182,8 @@ hr {
 }
 
 .calendar-dates .active {
-    background: #16A34A !important;
-    color: white !important;
-}
-
-.calendar-dates .active:active {
-    background: #16A34A !important;
-    color: white !important;
+    background: #16A34A;
+    color: white;
 }
 
 .calendar-dates .muted {
@@ -1553,7 +1519,6 @@ hr {
     overflow: hidden;
     border-radius: 6px;
     width: 100%;
-    position: relative;
 }
 
 .slider {
@@ -1580,7 +1545,6 @@ hr {
     flex: 0 0 250px;
     width: 282px;
     min-width: 0;
-    box-sizing: unset;
 }
 
 .review-card:hover {
@@ -1607,11 +1571,16 @@ hr {
     font-size: 14px;
 }
 
-.avatar img{
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    border-radius: 50%;
+.avatar-1 {
+    background: linear-gradient(135deg, #ff9d5c 0%, #ff6b6b 100%);
+}
+
+.avatar-2 {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.avatar-3 {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
 
 .author-block {
@@ -1685,7 +1654,7 @@ hr {
     left: 0;
     cursor: grab;
     transition: all 0.2s ease;
-
+   
     width: 30%;
 }
 
@@ -2047,10 +2016,7 @@ hr {
     margin-top: 40px;
     line-height: 24px;
 }
-.about-intro-text span{
-    max-width: 100%;
-    display: block;
-}
+
 
 
 .gallery-header {
@@ -2542,11 +2508,11 @@ section.gallery .gallery-arrow:disabled {
 }
 
 .topic-item {
-    padding: 10px 18px;
+    padding: 14px 20px;
     border-radius: 30px;
-    border: 1.5px solid #17AA00;
+    border: 1px solid #17AA00;
     color: #17AA00;
-    font-size: 15px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.25s ease;
     white-space: nowrap;
@@ -2609,110 +2575,20 @@ section.gallery .gallery-arrow:disabled {
 
 .topics-modal-content {
     background: white;
-    width: 1200px;
-    max-width: 95vw;
-    padding: 28px 32px 32px;
+    width: 520px;
+    padding: 30px;
     border-radius: 16px;
-    max-height: 85vh;
-    overflow-y: auto;
-    animation: fadeInScale 0.22s ease;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
 }
 
-.modal-header h3 {
-    margin: 0;
-    font-size: 20px;
-    font-weight: 700;
-}
-
 #closeTopics {
-    font-size: 26px;
+    font-size: 22px;
     cursor: pointer;
-    color: #555;
-    line-height: 1;
-    padding: 0 4px;
-    transition: color 0.2s;
-}
-
-#closeTopics:hover {
-    color: #111;
-}
-
-.modal-body {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.topics-modal .topics-modal-content {
-    position: relative;
-}
-
-.topics-modal .modal-header {
-    position: absolute;
-    top: 20px;
-    right: 22px;
-    margin: 0;
-    z-index: 1;
-}
-
-.topics-modal .modal-header h3 {
-    display: none;
-}
-
-.topics-modal #closeTopics {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    padding: 0;
-    border-radius: 50%;
-    background: #e5e5e5;
-    color: #777;
-    font-size: 18px;
-    line-height: 1;
-}
-
-.topics-modal .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-}
-
-.topics-modal-group {
-    margin-bottom: 0;
-}
-
-.topics-modal-group h3 {
-    margin: 0 0 14px;
-    font-size: 20px;
-    font-weight: 400;
-}
-
-.filter-section {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.filter-section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: #111;
-}
-
-.filter-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
 }
 
 @media (max-width: 768px) {
@@ -2791,7 +2667,7 @@ section.gallery .gallery-arrow:disabled {
         font-size: 16px;
     }
 
-    .book-btn_new, .book-btn {
+    .book-btn {
         font-size: 14px;
         padding: 10px 12px;
     }
@@ -3188,7 +3064,7 @@ section.gallery .gallery-arrow:disabled {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 28px 16px;
+    padding: 20px 24px 16px;
     border-bottom: 1px solid #eee;
 }
 
@@ -3213,45 +3089,41 @@ section.gallery .gallery-arrow:disabled {
     color: #111;
 }
 
-.all-cats-body {
-    padding: 20px 28px 28px;
+.all-cats-list {
+    list-style: none;
+    padding: 16px 16px 20px;
+    margin: 0;
     overflow-y: auto;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.all-cats-list-item {
-    list-style: none;
+.all-cats-list li {
     padding: 10px 18px;
     border-radius: 30px;
-    border: 1.5px solid #17AA00;
-    color: #17AA00;
+    border: 2px solid #2e7d32;
+    color: #2e7d32;
     font-size: 15px;
     cursor: pointer;
     transition: all 0.2s ease;
     white-space: nowrap;
-    font-family: 'Mulish', sans-serif;
 }
 
-.all-cats-list-item:hover {
-    background: #17AA00;
+.all-cats-list li:hover {
+    background: #2e7d32;
     color: #fff;
-    transform: scale(1.04);
+    transform: scale(1.05);
 }
 
 @media (max-width: 480px) {
     .all-cats-modal-content {
-        width: 95vw;
+        width: 80%;
         border-radius: 16px;
-        max-height: 88vh;
+        max-height: 85vh;
     }
 
-    .all-cats-body {
-        padding: 16px 16px 20px;
-    }
-
-    .all-cats-list-item {
+    .all-cats-list li {
         font-size: 14px;
         padding: 9px 14px;
     }
@@ -3274,7 +3146,7 @@ section.gallery .gallery-arrow:disabled {
         transition: transform 0.1s ease;
     }
 
-    .book-btn_new, .book-btn:active {
+    .book-btn:active {
         transform: scale(0.96);
     }
 
@@ -3329,18 +3201,12 @@ section.gallery .gallery-arrow:disabled {
 
     .calendar-dates span {
         font-size: 14px;
-        -webkit-tap-highlight-color: transparent;
     }
 
     .calendar-dates .active {
-        background: #16A34A !important;
-        color: white !important;
+        background: #17AA00;
+        color: white;
         border-radius: 8px;
-    }
-
-    .calendar-dates .active:active {
-        background: #16A34A !important;
-        color: white !important;
     }
 
     .full-schedule {
@@ -3577,7 +3443,6 @@ section.gallery .gallery-arrow:disabled {
         min-width: 44px;
         font-size: 15px;
         border-radius: 50%;
-        margin-top: 20px;
     }
 
     .author {
@@ -3793,7 +3658,7 @@ section.gallery .gallery-arrow:disabled {
     }
 
     .arrow-group .arrow {
-
+   
     }
 
     .arrow-group .arrow:hover {
@@ -4119,7 +3984,6 @@ section.gallery .gallery-arrow:disabled {
 
     section.gallery {
         padding: 28px 0 16px;
-                margin-top: 0;
     }
 
     section.gallery .container {
@@ -4186,8 +4050,6 @@ section.gallery .gallery-arrow:disabled {
 
     .about {
         padding: 24px 12px;
-        margin-bottom: 0;
-        max-width: 100%;
     }
 
     .about-card {
@@ -4233,23 +4095,23 @@ section.gallery .gallery-arrow:disabled {
     }
 
     .about-toggle {
-        margin: 12px auto 0;
-        background: none;
-        border: none;
-        font-family: 'Formular', 'Mulish', sans-serif;
-        font-size: 16px;
-        line-height: 20px;
-        font-weight: 400;
-        letter-spacing: 0;
-        color: #2979ff;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-        text-decoration: none;
-    }
+    margin: 12px auto 0;
+    background: none;
+    border: none;
+    font-family: 'Formular', 'Mulish', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    letter-spacing: 0;
+    color: #2979ff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    text-decoration: none;
+}
 
     .topics-section {
         padding: 24px 0 32px;
@@ -4420,44 +4282,42 @@ section.gallery .gallery-arrow:disabled {
     .leave-btn,
     .submit-btn,
     .full-schedule,
-    .book-btn_new, .book-btn {
+    .book-btn {
         width: 100%;
         max-width: none;
         box-sizing: border-box;
-
-    }
-    .reviews-all-link-mobile{
-        margin: 0;
     }
 
-    #slider{
-        width: 100%;
-        max-width: 305px;
-    }
+    
+#slider{
+    width: 100%;
+    max-width: 305px;
+}
 
-    .faq-question span{
-        width: auto;
-        flex: 1;
-        min-width: 0;
-    }
+.faq-question span{
+    width: auto;
+    flex: 1;
+    min-width: 0;
+}
 }
 
 
 .read-more-btn {
-    background: none;
-    border: none;
-    color: #0066cc;
-    font-size: 13px;
-    padding: 0;
-    cursor: pointer;
-    margin: 0;
-    display: inline;
-    white-space: nowrap;
-}
+        background: none;
+        border: none;
+        color: #0066cc;
+        font-size: 13px;
+        padding: 0;
+        cursor: pointer;
+        margin: 0;
+        display: inline;
+        white-space: nowrap;
+    }
 
 /* ===== FIX OVERFLOW AXA X PE MOBILE ===== */
 @media (max-width: 768px) {
 
+    /* Excepții pentru elemente care trebuie să depășească (absolute/fixed) */
     .mob-menu-drawer,
     .mob-phone-modal,
     .mob-menu-overlay,
@@ -4467,17 +4327,10 @@ section.gallery .gallery-arrow:disabled {
     }
 
     /* Imagini responsive - exceptie pentru gallery-image */
-    img:not(.avatar img):not(.place__img):not(.hero-image):not(.about_btn img){
+    img:not(.gallery-image) {
         max-width: 100%;
         width: 100%;
         height: 200px;
-    }
-
-    .reviews__yandex-profile-wrap img,
-    .catalog__features img,
-    .catalog__feature img {
-        width: auto !important;
-        height: auto !important;
     }
 
     .gallery-image {
@@ -4688,18 +4541,10 @@ section.gallery .gallery-arrow:disabled {
         border-radius: 10px;
         justify-content: center;
         align-items: center;
-        -webkit-tap-highlight-color: transparent;
     }
 
     .calendar-dates .active {
-        background: #16A34A !important;
-        color: white !important;
         border-radius: 10px;
-    }
-
-    .calendar-dates .active:active {
-        background: #16A34A !important;
-        color: white !important;
     }
 
     .full-schedule {
@@ -4825,15 +4670,4 @@ section.gallery .gallery-arrow:disabled {
         width: 24px;
         height: 24px;
     }
-}
-
-.show-more.disabled{
-    display: none;
-}
-
-.avatar img {
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    border-radius: 50%;
 }

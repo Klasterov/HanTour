@@ -1,0 +1,61 @@
+input, textarea{
+    border: 1px solid #D9D9DE !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
+    font-family: inherit !important;
+    background: #fff !important;
+    color: #76767A !important;
+}
+
+.questions__form input{
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+h3.form__title{
+    margin: 0 0 16px;
+    text-align: center;
+    font-size: 24px;
+    line-height: 30px;
+    color: black;
+}
+
+.questions__form #checkbox-question{
+position: relative;
+}
+/* ===== Menu Modal ===== */
+.modal__menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+}
+
+.modal__menu.modal-active {
+    display: flex;
+}
+
+.modal__container-menu {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 1170px;
+    margin: 40px auto;
+    padding: 24px;
+    position: relative;
+}
+
+.modal__menu-close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 10px;
+    cursor: pointer;
+    color: #333;
+}
