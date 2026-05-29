@@ -1,12 +1,12 @@
 const callBtn = document.getElementById("callBtn");
 const modal = document.getElementById("modal");
-const closeModal_new = document.getElementById("closeModal");
+const closeModal = document.getElementById("closeModal");
 
 callBtn.onclick = () => {
   modal.style.display = "flex";
 };
 
-closeModal_new.onclick = () => {
+closeModal.onclick = () => {
   modal.style.display = "none";
 };
 
@@ -16,27 +16,18 @@ window.onclick = (e) => {
   }
 };
 
-// РљР°С‚РµРіРѕСЂРёРё вЂ” РїРµСЂРµС…РѕРґ РЅР° СЃС‚СЂР°РЅРёС†Сѓ РєР°С‚Р°Р»РѕРіР°
 document.querySelectorAll(".category[data-category]").forEach(item => {
   item.addEventListener("click", () => {
     const categoryName = item.dataset.category || item.textContent.trim();
-    //window.location.href = `catalog.html?category=${encodeURIComponent(categoryName)}`;
+    window.location.href = `catalog.html?category=${encodeURIComponent(categoryName)}`;
   });
 });
 
-// РљРЅРѕРїРєР° "Р•С‰С‘..." вЂ” РѕС‚РєСЂС‹РІР°РµС‚ РјРѕРґР°Р»СЊРЅРѕРµ РѕРєРЅРѕ СЃРѕ РІСЃРµРјРё РєР°С‚РµРіРѕСЂРёСЏРјРё
-// Кнопка "Ещё..." в герое -> открывает topicsModal
 const moreCategoriesBtn = document.getElementById("moreCategoriesBtn");
 
 if (moreCategoriesBtn) {
   moreCategoriesBtn.addEventListener("click", (e) => {
     e.stopPropagation();
-    const topicsMoreBtn = document.querySelector(".topics-section .more-btn");
-    if (topicsMoreBtn) {
-      topicsMoreBtn.click();
-      return;
-    }
-
     const topicsModal = document.getElementById("topicsModal");
     if (topicsModal) {
       topicsModal.style.display = "flex";
@@ -45,7 +36,6 @@ if (moreCategoriesBtn) {
   });
 }
 
-// РЎС‚Р°СЂС‹Р№ modal categorii (fallback)
 const categoriesModal = document.getElementById("categoriesModal");
 const closeCategories = document.getElementById("closeCategories");
 if (closeCategories) {
@@ -59,35 +49,21 @@ if (closeCategories) {
   });
 }
 
-// =============================
-// Fade-in imagine hero
-// =============================
 document.addEventListener('DOMContentLoaded', () => {
   const heroImage = document.querySelector('.hero-image');
 
-  // DacДѓ imaginea e deja Г®ncДѓrcatДѓ
-  if (heroImage !== null && heroImage.complete) {
+  if (heroImage.complete) {
     heroImage.classList.add('loaded');
-  } else if (heroImage !== null) {
-    // AИ™teaptДѓ sДѓ se Г®ncarce
+  } else {
     heroImage.addEventListener('load', () => {
       heroImage.classList.add('loaded');
     });
   }
 });
 
-
-// =============================================
-// РљРђР РўРћР§РљР Р­РљРЎРљРЈР РЎРР™ вЂ” РєР»РёРє РЅР° РєР°СЂС‚РѕС‡РєСѓ РёР»Рё "Р—Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ"
-// =============================================
-
-// РќРѕСЂРјР°Р»РёР·СѓРµРј data-link: СѓР±РёСЂР°РµРј РІРµРґСѓС‰РёР№ СЃР»РµС€ РµСЃР»Рё РµСЃС‚СЊ, РґРѕР±Р°РІР»СЏРµРј .html
 function resolveExcursionLink(rawLink) {
-  return false;
   if (!rawLink) return "excursion.html";
-  // Р•СЃР»Рё СѓР¶Рµ РІС‹РіР»СЏРґРёС‚ РєР°Рє С„Р°Р№Р» вЂ” РІРµСЂРЅСѓС‚СЊ РєР°Рє РµСЃС‚СЊ
   if (rawLink.includes(".html")) return rawLink;
-  // /excursion/1 в†’ excursion.html?id=1
   const match = rawLink.match(/\/excursion\/(\d+)/);
   if (match) return `excursion.html?id=${match[1]}`;
   return "excursion.html";
@@ -96,9 +72,8 @@ function resolveExcursionLink(rawLink) {
 document.querySelectorAll(".excursion-card").forEach(card => {
   card.style.cursor = "pointer";
   card.addEventListener("click", (e) => {
-    // РќРµ СЃСЂР°Р±Р°С‚С‹РІР°РµС‚ РµСЃР»Рё РєР»РёРєРЅСѓР»Рё РЅР° РєРЅРѕРїРєСѓ (РѕРЅР° СЃР°РјР° РѕР±СЂР°Р±РѕС‚Р°РµС‚)
-    if (e.target.classList.contains("book-btn")) return;
-    window.location.href = card.dataset.link;
+   if (e.target.classList.contains("book-btn")) return;
+    window.location.href = resolveExcursionLink(card.dataset.link);
   });
 });
 
@@ -111,15 +86,12 @@ document.querySelectorAll(".book-btn").forEach(btn => {
   });
 });
 
-// =============================================
-// "РџРѕРєР°Р·Р°С‚СЊ РµС‰Рµ" в†’ РєР°С‚Р°Р»РѕРі
-// =============================================
-/*const showMoreBtn = document.getElementById("showMore");
+const showMoreBtn = document.getElementById("showMore");
 if (showMoreBtn) {
   showMoreBtn.addEventListener("click", () => {
     window.location.href = "catalog.html";
   });
-}*/
+}
 
 
 const months = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
@@ -135,25 +107,23 @@ const selectedDateText = document.getElementById("selectedDateText");
 const scheduleList = document.getElementById("scheduleList");
 
 function renderCalendar() {
-  if(currentDate === null || monthEl === null)return false;
   monthEl.textContent = months[currentDate.getMonth()] + " " + currentDate.getFullYear();
   calendarDates.innerHTML = "";
 
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const displayMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
 
-  const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(),1);
-  const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth()+1,0);
+  const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
   let start = firstDay.getDay();
-  if(start===0) start=7;
+  if (start === 0) start = 7;
 
-  for(let i=1;i<start;i++){
+  for (let i = 1; i < start; i++) {
     calendarDates.innerHTML += "<span></span>";
   }
 
-  for(let d=1; d<=lastDay.getDate(); d++){
+  for (let d = 1; d <= lastDay.getDate(); d++) {
     const span = document.createElement("span");
     span.textContent = d;
 
@@ -169,147 +139,126 @@ function renderCalendar() {
       span.classList.add("active");
     }
 
-    // Mark past dates as muted
-    if(dateToCheck < today){
+    if (dateToCheck < today) {
       span.classList.add("muted");
       span.style.cursor = "not-allowed";
     } else {
-      span.onclick = ()=>{console.log(span);
+      span.onclick = () => {
         selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), d);
         currentDate = new Date(selectedDate);
         renderCalendar();
-        renderSchedule('click');
-      }
+        renderSchedule();
+      };
     }
 
     calendarDates.appendChild(span);
   }
 }
 
-// Данные экскурсий для расписания
-const excursionData = [
-  { id: 1, title: "Экскурсия в Йошкар-Олу на автобусе из Казани", type: "Автобусная", duration: "10 часов", price: 2900 },
-  { id: 2, title: "Экскурсия в Болгар из Казани", type: "Автобусная", duration: "11 часов", price: 3000 },
-  { id: 3, title: "Автобусная экскурсия в Елабугу", type: "Автобусная", duration: "11 часов", price: 3300 },
-  { id: 4, title: "Обзорная экскурсия по Казани с посещением Кремля", type: "Автобусная", duration: "4 часа", price: 1100 },
-  { id: 5, title: "Экскурсия «Ночная Казань с колесом обозрения»", type: "Автобусная", duration: "2,5 часа", price: 1400 },
-  { id: 6, title: "Экскурсия в Свияжск и Храм всех религий", type: "Автобусная", duration: "6 часов", price: 2400 },
+const DEFAULT_EXCURSIONS = [
+  { id: 1, title: "Экскурсия в Йошкар-Олу на автобусе из Казани", type: "Автобусная", duration: "10 часов", price: 2900, time: "09:00" },
+  { id: 2, title: "Экскурсия в Болгар из Казани", type: "Автобусная", duration: "11 часов", price: 3000, time: "10:00" },
+  { id: 3, title: "Автобусная экскурсия в Елабугу", type: "Автобусная", duration: "11 часов", price: 3300, time: "11:00" },
+  { id: 4, title: "Обзорная экскурсия по Казани с посещением Кремля", type: "Автобусная", duration: "4 часа", price: 1100, time: "12:00" },
+  { id: 5, title: "Экскурсия «Ночная Казань с колесом обозрения»", type: "Автобусная", duration: "2,5 часа", price: 1400, time: "13:00" },
+  { id: 6, title: "Экскурсия в Свияжск и Храм всех религий", type: "Автобусная", duration: "6 часов", price: 2400, time: "14:00" },
 ];
 
-function renderSchedule(action){
-
-  const day = currentDate.getDate().toString().padStart(2,"0");
-  const month = (currentDate.getMonth()+1).toString().padStart(2,"0");
-  const year = currentDate.getFullYear();
-if(selectedDateText == null)return false;
-  selectedDateText.textContent = `${day}.${month}.${year}, ${daysRu[currentDate.getDay()]}`;
-
-  if(action !== undefined){
-    //$('#scheduleList').html('');
-    var dayOfWeek = currentDate.getDay();
-    var yourFormat = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-    $.ajax({
-      url: window.location.href, // текущая страница
-      type: 'GET',
-      data: {
-        calendar_date: yourFormat
-      },
-      dataType: 'html',
-      success: function(response) {
-        // Из ответа извлекаем HTML элемента с id="scheduleList"
-        var newScheduleList = $(response).find('#scheduleList').html();
-
-        // Вставляем полученный HTML в текущий scheduleList
-        if (newScheduleList) {
-          $('#scheduleList').html(newScheduleList);
-        }
-      },
-      error: function(xhr, status, error) {
-        console.error('AJAX Error:', error);
-      }
-    });
+async function fetchSchedule(date) {
+  const iso = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4000);
+  try {
+    const res = await fetch(`/api/schedule?date=${iso}`, { signal: controller.signal });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data.schedule)) throw new Error("Invalid response");
+    return data.schedule;
+  } finally {
+    clearTimeout(timeout);
   }
+}
 
+const ARROW_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13.4297 5.93005L19.4997 12.0001L13.4297 18.0701" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 12H19.33" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
-  return false;
+function buildScheduleItems(items) {
   scheduleList.innerHTML = "";
-
-  excursionData.forEach((exc, i) => {
-    const hour = (9 + i).toString().padStart(2, "0");
-
+  items.forEach((exc, i) => {
+    const hour = exc.time || `${(9 + i).toString().padStart(2, "0")}:00`;
     const item = document.createElement("div");
     item.className = "schedule-item";
     item.style.cursor = "pointer";
-    //item.onclick = () => window.location.href = `excursion.html?id=${exc.id}`;
-
+    item.onclick = () => window.location.href = `excursion.html?id=${exc.id}`;
     item.innerHTML = `
-      <div class="time">${hour}:00</div>
+      <div class="time">${hour}</div>
       <div class="schedule-item-info">
         <div class="schedule-title">${exc.title}</div>
         <div class="schedule-meta">${exc.type}, ${exc.duration}</div>
       </div>
-      <div class="price">от ${exc.price} ₽ <span class="schedule-arrow"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M13.4297 5.93005L19.4997 12.0001L13.4297 18.0701" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M4.5 12H19.33" stroke="#17AA00" stroke-width="1.5" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</span></div>
+      <div class="price">от ${exc.price} ₽ <span class="schedule-arrow">${ARROW_SVG}</span></div>
     `;
-
     scheduleList.appendChild(item);
   });
 }
 
-if(monthEl !== null){
-  monthEl.onclick = ()=>{
-    monthPicker.classList.toggle("hidden");
-    monthPicker.innerHTML="";
-    months.forEach((m,i)=>{
-      const div = document.createElement("div");
-      div.textContent=m;
-      div.onclick=()=>{
-        currentDate.setMonth(i);
-        monthPicker.classList.add("hidden");
-        renderCalendar();
-        renderSchedule();
-      }
-      monthPicker.appendChild(div);
-    });
-  };
+function renderSchedule() {
+  const day   = currentDate.getDate().toString().padStart(2, "0");
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, "0");
+  const year  = currentDate.getFullYear();
+
+  selectedDateText.textContent = `${day}.${month}.${year}, ${daysRu[currentDate.getDay()]}`;
+
+  buildScheduleItems(DEFAULT_EXCURSIONS);
+
+  fetchSchedule(currentDate)
+    .then(fromApi => { if (fromApi.length > 0) buildScheduleItems(fromApi); })
+    .catch(err => console.warn("Бекенд недоступен, используются дефолтные данные расписания:", err));
 }
 
-if(document.getElementById("prevMonth") !== null){
-  document.getElementById("prevMonth").onclick=()=>{
-    currentDate.setMonth(currentDate.getMonth()-1);
-    renderCalendar();
-    renderSchedule();
-  };
-}
-if(document.getElementById("nextMonth") !== null) {
-  document.getElementById("nextMonth").onclick = () => {
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    renderCalendar();
-    renderSchedule();
-  };
-}
-if(document.getElementById("prevDay") !== null) {
-  document.getElementById("prevDay").onclick = () => {
-    currentDate.setDate(currentDate.getDate() - 1);
-    renderCalendar();
-    renderSchedule();
-  };
-}
-if(document.getElementById("nextDay") !== null) {
-  document.getElementById("nextDay").onclick = () => {
-    currentDate.setDate(currentDate.getDate() + 1);
-    renderCalendar();
-    renderSchedule();
-  };
-}
-if(document.getElementById("fullSchedule") !== null) {
-  document.getElementById("fullSchedule").onclick = () => {
-    window.location.href = "/excursions/";
-  };
-}
+monthEl.onclick = ()=>{
+  monthPicker.classList.toggle("hidden");
+  monthPicker.innerHTML="";
+  months.forEach((m,i)=>{
+    const div = document.createElement("div");
+    div.textContent=m;
+    div.onclick=()=>{
+      currentDate.setMonth(i);
+      monthPicker.classList.add("hidden");
+      renderCalendar();
+      renderSchedule();
+    }
+    monthPicker.appendChild(div);
+  });
+};
+
+document.getElementById("prevMonth").onclick=()=>{
+  currentDate.setMonth(currentDate.getMonth()-1);
+  renderCalendar();
+  renderSchedule();
+};
+document.getElementById("nextMonth").onclick=()=>{
+  currentDate.setMonth(currentDate.getMonth()+1);
+  renderCalendar();
+  renderSchedule();
+};
+
+document.getElementById("prevDay").onclick=()=>{
+  currentDate.setDate(currentDate.getDate()-1);
+  selectedDate = new Date(currentDate);
+  renderCalendar();
+  renderSchedule();
+};
+document.getElementById("nextDay").onclick=()=>{
+  currentDate.setDate(currentDate.getDate()+1);
+  selectedDate = new Date(currentDate);
+  renderCalendar();
+  renderSchedule();
+};
+
+document.getElementById("fullSchedule").onclick=()=>{
+  window.location.href="schedule.html";
+};
+
 renderCalendar();
 renderSchedule();
 
@@ -326,23 +275,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!slider || !prevBtn || !nextBtn || !progressBar || !progressTrack) return;
 
-    const cards = document.querySelectorAll('.review-card');
-    const cardsPerView = 3;
+    const cards = Array.from(slider.querySelectorAll('.review-card'));
     let currentIndex = 0;
     let isDragging = false;
 
+    function getGap() {
+        const style = window.getComputedStyle(slider);
+        return parseFloat(style.columnGap || style.gap) || 16;
+    }
+
+    function getCardsPerView() {
+        const cardWidth = cards[0] ? cards[0].offsetWidth : 0;
+        const containerWidth = slider.parentElement ? slider.parentElement.clientWidth : 0;
+        if (!cardWidth || !containerWidth) return 1;
+        return Math.max(1, Math.floor((containerWidth + getGap()) / (cardWidth + getGap())));
+    }
+
+    function getMaxIndex() {
+        return Math.max(cards.length - getCardsPerView(), 0);
+    }
+
     function updateSlider() {
-        const cardWidth = cards[0].offsetWidth;
-        const gap = 16;
+        const cardWidth = cards[0] ? cards[0].offsetWidth : 0;
+        const gap = getGap();
+        currentIndex = Math.max(0, Math.min(currentIndex, getMaxIndex()));
         const offset = -currentIndex * (cardWidth + gap);
         slider.style.transform = `translateX(${offset}px)`;
         prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex >= cards.length - cardsPerView;
+        nextBtn.disabled = currentIndex >= getMaxIndex();
         updateProgressBar();
     }
 
     function updateProgressBar() {
-        const maxScroll = Math.max(cards.length - cardsPerView, 1);
+        const cardsPerView = getCardsPerView();
+        const maxScroll = Math.max(getMaxIndex(), 1);
         const percentage = currentIndex / maxScroll;
         const trackWidth = progressTrack.offsetWidth;
         const barWidth = Math.max(trackWidth * (cardsPerView / cards.length), 40);
@@ -354,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (direction === 'prev' && currentIndex > 0) {
             currentIndex--;
             updateSlider();
-        } else if (direction === 'next' && currentIndex < cards.length - cardsPerView) {
+        } else if (direction === 'next' && currentIndex < getMaxIndex()) {
             currentIndex++;
             updateSlider();
         }
@@ -363,23 +329,21 @@ document.addEventListener("DOMContentLoaded", () => {
     prevBtn.addEventListener('click', () => navigate('prev'));
     nextBtn.addEventListener('click', () => navigate('next'));
 
-    // Progress bar drag (mouse)
     progressTrack.addEventListener('mousedown', () => { isDragging = true; });
     document.addEventListener('mousemove', (e) => {
         if (isDragging) {
             const rect = progressTrack.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            const maxScroll = Math.max(cards.length - cardsPerView, 1);
+            const maxScroll = Math.max(getMaxIndex(), 1);
             const barWidth = progressBar.offsetWidth;
             const maxX = rect.width - barWidth;
             currentIndex = Math.round((x / maxX) * maxScroll);
-            currentIndex = Math.max(0, Math.min(currentIndex, cards.length - cardsPerView));
+            currentIndex = Math.max(0, Math.min(currentIndex, getMaxIndex()));
             updateSlider();
         }
     });
     document.addEventListener('mouseup', () => { isDragging = false; });
 
-    // Touch swipe support
     let touchStartX = 0;
     let touchStartY = 0;
     let isSwiping = false;
@@ -406,18 +370,17 @@ document.addEventListener("DOMContentLoaded", () => {
         isSwiping = false;
     }, { passive: true });
 
-    // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') navigate('prev');
         if (e.key === 'ArrowRight') navigate('next');
     });
 
     updateSlider();
-    window.addEventListener('resize', updateProgressBar);
+    window.addEventListener('resize', updateSlider);
 });
 
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
   const image = document.getElementById("galleryImage");
   const prevBtn = document.getElementById("prevPhoto");
@@ -428,36 +391,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!image || !prevBtn || !nextBtn || !currentIndexEl || !totalPhotosEl) return;
 
-  const photos = [
+  const DEFAULT_PHOTOS = [
     {
-      src: "/local/templates/template/img/galery/photo@1x.png",
-      srcset: "/local/templates/template/img/galery/photo@1x.png 1x, /local/templates/template/img/galery/photo@2x.png 2x"
+      src: "img/galery/photo@1x.png",
+      srcset: "img/galery/photo@1x.png 1x, img/galery/photo@2x.png 2x",
+      alt: "Фото галереи 1"
     },
     {
-      src: "/local/templates/template/img/banner@1x.jpeg",
-      srcset: "/local/templates/template/img/banner@1x.jpeg 1x, /local/templates/template/img/banner@2x.jpeg 2x"
+      src: "img/banner@1x.jpeg",
+      srcset: "img/banner@1x.jpeg 1x, img/banner@2x.jpeg 2x",
+      alt: "Фото галереи 2"
     },
     {
-      src: "/local/templates/template/img/excursion/1.png",
-      srcset: "/local/templates/template/img/excursion/1.png 1x, /local/templates/template/img/excursion/1@2x.png 2x"
+      src: "img/excursion/1.png",
+      srcset: "img/excursion/1.png 1x, img/excursion/1@2x.png 2x",
+      alt: "Фото галереи 3"
     }
   ];
 
+  let photos = DEFAULT_PHOTOS;
   let index = 0;
   let autoplayTimer = null;
   let fadeTimer = null;
   const AUTOPLAY_DELAY = 2200;
   const FADE_DURATION = 180;
 
-  totalPhotosEl.textContent = photos.length.toString().padStart(2, "0");
-
   function renderGallery() {
     image.src = photos[index].src;
     image.srcset = photos[index].srcset;
-
-    currentIndexEl.textContent = (index + 1)
-      .toString()
-      .padStart(2, "0");
+    currentIndexEl.textContent = (index + 1).toString().padStart(2, "0");
+    totalPhotosEl.textContent = photos.length.toString().padStart(2, "0");
   }
 
   function updateGallery() {
@@ -506,95 +469,152 @@ document.addEventListener("DOMContentLoaded", () => {
     else startAutoplay();
   });
 
+  // Сразу показываем дефолтные фото
   renderGallery();
   startAutoplay();
+
+  // Фоново грузим с сервера и обновляем если пришли данные
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch("/api/gallery", { signal: controller.signal });
+    clearTimeout(timeout);
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data.photos) && data.photos.length > 0) {
+        photos = data.photos;
+        index = 0;
+        renderGallery();
+      }
+    }
+  } catch (err) {
+    console.warn("Бекенд недоступен, используются дефолтные фото галереи:", err);
+  }
 
 });
 
 
 const content = document.getElementById('aboutContent');
-const toggle = document.getElementById('aboutToggle');
-const toggleText = document.getElementById('aboutToggleText');
-const arrow = toggle?.querySelector('.arrow');
-let savedScrollY = null;
-console.log(window.location.pathname);
-if (content && toggle && toggleText && !window.location.pathname.startsWith('/excursions/')) {
-  toggle.addEventListener('click', () => {
-    const isCollapsed = content.classList.contains('collapsed');
-    if (isCollapsed) {
-      savedScrollY = window.scrollY;
-    }
+  const toggle = document.getElementById('aboutToggle');
+  const toggleText = document.getElementById('aboutToggleText');
+  const arrow = toggle?.querySelector('.arrow');
+  let savedScrollY = null;
 
-    content.classList.toggle('collapsed');
-
-    if (content.classList.contains('collapsed')) {
-      toggleText.textContent = 'Читать полностью';
-      if (arrow) arrow.style.transform = 'rotate(0deg)';
-
-      if (savedScrollY !== null) {
-        const targetY = savedScrollY;
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            window.scrollTo({
-              top: targetY,
-              behavior: reduceMotion ? 'auto' : 'smooth'
-            });
-            savedScrollY = null;
-          });
-        });
+  if (content && toggle && toggleText) {
+    toggle.addEventListener('click', () => {
+      const isCollapsed = content.classList.contains('collapsed');
+      if (isCollapsed) {
+        savedScrollY = window.scrollY;
       }
-    } else {
-      toggleText.textContent = 'Скрыть';
-      if (arrow) arrow.style.transform = 'rotate(180deg)';
-    }
-  });
-}
 
-  document.addEventListener("DOMContentLoaded", () => {
-  return;
-  const cardsContainer = document.querySelector(".cards");
-  const rightArrow = document.querySelector(".arrow.right");
+      content.classList.toggle('collapsed');
 
-  let index = 0;
-  const cardWidth = 270; // lДѓИ›imea cardului + margin
-  const visibleCards = 3; // cГўte carduri se vДѓd simultan
-  const totalCards = cardsContainer.children.length;
+      if (content.classList.contains('collapsed')) {
+        toggleText.textContent = 'Читать полностью';
+        if (arrow) arrow.style.transform = 'rotate(0deg)';
 
-  function updateSlider() {
-    const offset = -index * cardWidth;
-    cardsContainer.style.transform = `translateX(${offset}px)`;
+        if (savedScrollY !== null) {
+          const targetY = savedScrollY;
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              window.scrollTo({
+                top: targetY,
+                behavior: reduceMotion ? 'auto' : 'smooth'
+              });
+              savedScrollY = null;
+            });
+          });
+        }
+      } else {
+        toggleText.textContent = 'Скрыть';
+        if (arrow) arrow.style.transform = 'rotate(180deg)';
+      }
+    });
   }
 
-  rightArrow.addEventListener("click", () => {
-    index++;
-    if (index > totalCards - visibleCards) {
-      // dacДѓ am ajuns la capДѓt, revin la Г®nceput
-      index = 0;
+  document.addEventListener("DOMContentLoaded", () => {
+    const cardsContainer = document.getElementById("gallerySlider");
+    const prevArrow = document.getElementById("galleryPrev");
+    const nextArrow = document.getElementById("galleryNext");
+    const wrapper = cardsContainer ? cardsContainer.closest(".attractions-cards-wrapper") : null;
+
+    if (!cardsContainer || !prevArrow || !nextArrow || !wrapper) return;
+
+    const cards = Array.from(cardsContainer.children);
+    let index = 0;
+
+    function getGap() {
+      const style = window.getComputedStyle(cardsContainer);
+      return parseFloat(style.columnGap || style.gap) || 0;
     }
+
+    function getStep() {
+      const firstCard = cards[0];
+      if (!firstCard) return 0;
+      return firstCard.getBoundingClientRect().width + getGap();
+    }
+
+    function getMaxIndex() {
+      const step = getStep();
+      if (!step) return 0;
+      const visibleCards = Math.max(1, Math.floor((wrapper.clientWidth + getGap()) / step));
+      return Math.max(0, cards.length - visibleCards);
+    }
+
+    function updateSlider() {
+      const maxIndex = getMaxIndex();
+      index = Math.max(0, Math.min(index, maxIndex));
+      cardsContainer.style.transform = `translateX(${-index * getStep()}px)`;
+      prevArrow.disabled = index === 0;
+      nextArrow.disabled = index === maxIndex;
+    }
+
+    prevArrow.addEventListener("click", () => {
+      index -= 1;
+      updateSlider();
+    });
+
+    nextArrow.addEventListener("click", () => {
+      index += 1;
+      updateSlider();
+    });
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let isSwiping = false;
+
+    cardsContainer.addEventListener("touchstart", (event) => {
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+      isSwiping = false;
+    }, { passive: true });
+
+    cardsContainer.addEventListener("touchmove", (event) => {
+      const dx = Math.abs(event.touches[0].clientX - touchStartX);
+      const dy = Math.abs(event.touches[0].clientY - touchStartY);
+      if (dx > dy && dx > 8) {
+        isSwiping = true;
+        event.preventDefault();
+      }
+    }, { passive: false });
+
+    cardsContainer.addEventListener("touchend", (event) => {
+      if (!isSwiping) return;
+
+      const diff = touchStartX - event.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) {
+        index += diff > 0 ? 1 : -1;
+        updateSlider();
+      }
+
+      isSwiping = false;
+    }, { passive: true });
+
+    window.addEventListener("resize", updateSlider);
     updateSlider();
   });
-
-  // Hover pe card в†’ se mДѓreИ™te
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("mouseenter", () => {
-      card.style.transform = "scale(1.1)";
-    });
-    card.addEventListener("mouseleave", () => {
-      card.style.transform = "scale(1)";
-    });
-  });
-
-  // Hover pe "РџРѕРєР°Р·Р°С‚СЊ РІСЃРµ" в†’ se mДѓreИ™te
-  const showAll = document.querySelector(".show-all");
-  showAll.addEventListener("mouseenter", () => {
-    showAll.style.transform = "scale(1.2)";
-  });
-  showAll.addEventListener("mouseleave", () => {
-    showAll.style.transform = "scale(1)";
-  });
-});
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -615,7 +635,6 @@ document.addEventListener("DOMContentLoaded", () => {
         nextEl: ".gallery-nav-next",
         prevEl: ".gallery-nav-prev",
       },
-      // Touch С‚РѕР»СЊРєРѕ РЅР° РјРѕР±Р°Р№Р»Рµ, РЅР° РґРµСЃРєС‚РѕРїРµ РІС‹РєР»СЋС‡РµРЅ drag
       simulateTouch: window.innerWidth < 900,
       on: {
         resize(swiper) {
@@ -634,14 +653,12 @@ document.querySelectorAll(".faq-question").forEach(question => {
     const item = question.parentElement;
     const isActive = item.classList.contains("active");
 
-    // Р—Р°РєСЂС‹РІР°РµРј РІСЃРµ
     document.querySelectorAll(".faq-item").forEach(el => {
       el.classList.remove("active");
       const ans = el.querySelector(".faq-answer");
       if (ans) ans.style.maxHeight = null;
     });
 
-    // РћС‚РєСЂС‹РІР°РµРј РєР»РёРєРЅСѓС‚С‹Р№ (РµСЃР»Рё РЅРµ Р±С‹Р» РѕС‚РєСЂС‹С‚)
     if (!isActive) {
       item.classList.add("active");
       const ans = item.querySelector(".faq-answer");
@@ -653,9 +670,6 @@ document.querySelectorAll(".faq-question").forEach(question => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===============================
-     CALL MODAL
-  =============================== */
 
   const callBtn = document.getElementById("callBtn");
   const callModal = document.getElementById("modal");
@@ -684,70 +698,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalTitle = topicsModal ? topicsModal.querySelector("h3") : null;
   const modalBody = topicsModal ? topicsModal.querySelector(".modal-body") : null;
 
-  function createTopicNode(item) {
-    const href = item.getAttribute("href");
-    const div = document.createElement(href ? "a" : "div");
-    if (href) div.href = href;
-    div.className = "topic-item";
-    div.textContent = item.textContent.trim();
-    const cat = item.dataset.category || item.textContent.trim();
-    div.style.cursor = "pointer";
-    div.addEventListener("click", () => {
-      //window.location.href = "catalog.html?category=" + encodeURIComponent(cat);
-    });
-    return div;
-  }
-
-  function openTopicsModal(groups, title) {
+  function openTopicsModal(items, title) {
     if (!topicsModal || !modalBody) return;
     if (modalTitle) modalTitle.textContent = title || "Все темы";
     modalBody.innerHTML = "";
-
-    groups.forEach(group => {
-      const items = [...group.querySelectorAll(".topic-item:not(.more-btn)")];
-      if (!items.length) return;
-
-      const modalGroup = document.createElement("div");
-      modalGroup.className = "topics-group topics-modal-group";
-
-      const groupTitle = group.querySelector("h3");
-      if (groupTitle) {
-        const titleNode = document.createElement("h3");
-        titleNode.textContent = groupTitle.textContent.trim();
-        modalGroup.appendChild(titleNode);
-      }
-
-      const list = document.createElement("div");
-      list.className = "topics-list";
-      items.forEach(item => {
-        list.appendChild(createTopicNode(item));
+    items.forEach(item => {
+      const div = document.createElement("div");
+      div.className = "topic-item";
+      div.textContent = item.textContent.trim();
+      const cat = item.dataset.category || item.textContent.trim();
+      div.style.cursor = "pointer";
+      div.addEventListener("click", () => {
+        window.location.href = "catalog.html?category=" + encodeURIComponent(cat);
       });
-
-      modalGroup.appendChild(list);
-      modalBody.appendChild(modalGroup);
+      modalBody.appendChild(div);
     });
-
     topicsModal.style.display = "flex";
-    //document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
   }
 
-  // Wire ALL "Еще..." buttons in topics-group sections
   document.querySelectorAll(".more-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-
-      const topicsSection = btn.closest(".topics-section");
-      const groups = topicsSection
-        ? [...topicsSection.querySelectorAll(".topics-group")]
-        : [];
-
-      openTopicsModal(groups, "");
+      const group = btn.closest(".topics-group");
+      const title = group ? group.querySelector("h3").textContent : "Все темы";
+      const items = group ? [...group.querySelectorAll(".topic-item:not(.more-btn)")] : [];
+      openTopicsModal(items, title);
     });
-    // Fix iOS stuck active state
     btn.addEventListener("touchend", () => {
       setTimeout(() => btn.blur(), 300);
     }, { passive: true });
   });
+
   if (closeTopics) {
     closeTopics.addEventListener("click", () => {
       topicsModal.style.display = "none";
@@ -763,10 +745,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-
-  // FAQ handled globally above
-
 
   const socialButtons = document.querySelectorAll(".social-btn");
   const hiddenInput = document.getElementById("selectedSocial");
@@ -1063,19 +1041,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* РђРґСЂРµСЃ в†’ РЇРЅРґРµРєСЃ РєР°СЂС‚С‹ */
-  /* Р—Р°РєР°Р·Р°С‚СЊ Р·РІРѕРЅРѕРє */
   const footerCallBtn = document.getElementById("footerCallBtn");
   const callModal = document.getElementById("modal");
 
-  footerCallBtn.addEventListener("click", () => {
-    callModal.style.display = "flex";
-  });
+  if (footerCallBtn && callModal) {
+    footerCallBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      callModal.style.display = "flex";
+      callModal.classList.add("modal-active");
+    });
+  }
 
-  /* РљРЅРѕРїРєР° РІРІРµСЂС… */
   const scrollTopBtn = document.getElementById("scrollTop");
 
   window.addEventListener("scroll", () => {
+    if (!scrollTopBtn) return;
     if (window.scrollY > 10) {
       scrollTopBtn.style.display = "flex";
     } else {
@@ -1083,21 +1063,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  scrollTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+  if (scrollTopBtn) {
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     });
-  });
+  }
 
 });
 
-// =============================================
-// MOBILE HEADER: Phone Modal, Burger Menu, Sticky
-// =============================================
 (function() {
 
-  // -- Phone modal --
   const mobPhoneBtn = document.getElementById('mobPhoneBtn');
   const mobPhoneModal = document.getElementById('mobPhoneModal');
   const mobPhoneModalClose = document.getElementById('mobPhoneModalClose');
@@ -1116,7 +1094,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // -- Burger / Drawer menu --
   const mobBurger = document.getElementById('mobBurger');
   const mobMenuDrawer = document.getElementById('mobMenuDrawer');
   const mobMenuOverlay = document.getElementById('mobMenuOverlay');
@@ -1150,9 +1127,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (mobMenuClose) mobMenuClose.addEventListener('click', closeDrawer);
   if (mobMenuOverlay) mobMenuOverlay.addEventListener('click', closeDrawer);
 
-
-
-  // "Р—Р°РєР°Р·Р°С‚СЊ Р·РІРѕРЅРѕРє" in mobile menu opens the main call modal
   if (mobMenuCallBtn) {
     mobMenuCallBtn.addEventListener('click', () => {
       closeDrawer();
@@ -1161,25 +1135,40 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // -- Mobile header stays fixed on scroll (already handled by position:fixed in CSS) --
-  // No extra JS needed; CSS position:fixed handles it.
-
 })();
 
-// =============================================
-// "Р§РёС‚Р°С‚СЊ РµС‰Рµ" вЂ” СЂР°Р·РІРѕСЂР°С‡РёРІР°РµС‚ С‚РµРєСЃС‚ РѕС‚Р·С‹РІР° РЅР° РјРѕР±РёР»Рµ
-// =============================================
+(function initCallModalTriggers() {
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('#callBtn, #footerCallBtn, #mobMenuCallBtn');
+    if (!trigger) return;
+
+    const callModal = document.getElementById('modal');
+    if (!callModal) return;
+
+    event.preventDefault();
+    callModal.style.display = 'flex';
+    callModal.classList.add('modal-active');
+
+    const mobMenuDrawer = document.getElementById('mobMenuDrawer');
+    const mobMenuOverlay = document.getElementById('mobMenuOverlay');
+    const mobBurger = document.getElementById('mobBurger');
+
+    if (mobMenuDrawer) mobMenuDrawer.classList.remove('open');
+    if (mobMenuOverlay) mobMenuOverlay.classList.remove('open');
+    if (mobBurger) mobBurger.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
-  // On excursion page reviews are handled in js/excursion.js.
-  /*if (document.querySelector('.layout .gallery') && document.getElementById('sec-route')) {
+  if (document.querySelector('.layout .gallery') && document.getElementById('sec-route')) {
     return;
-  }*/
+  }
 
   const maxChars = window.innerWidth <= 768 ? 150 : 190;
 
   document.querySelectorAll('.review-card p').forEach((p) => {
     const fullText = p.textContent.replace(/\s+/g, ' ').trim();
-    console.log(fullText,'fullText');
     if (fullText.length <= maxChars) {
       p.textContent = fullText;
       return;
@@ -1200,7 +1189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const renderExpanded = () => {
-
       p.textContent = `${fullText} `;
       btn.textContent = 'Скрыть';
       p.append(btn);
