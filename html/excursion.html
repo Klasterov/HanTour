@@ -558,7 +558,7 @@
         <div class="p-row"><span class="pn">Взрослые:</span><span class="p-dots" aria-hidden="true"></span><span class="pv">1100 ₽</span></div>
         <div class="p-row"><span class="pn">Пенсионеры:</span><span class="p-dots" aria-hidden="true"></span><span class="pv">1000 ₽</span></div>
         <div class="p-row"><span class="pn">Дети (7–14):</span><span class="p-dots" aria-hidden="true"></span><span class="pv">1000 ₽</span></div>
-        <div class="p-row"><span class="pn">Дети до 7 лет:</span><span class="p-dots" aria-hidden="true"></span><span class="pv">Бесплатно</span></div>
+        <div class="p-row"><span class="pn">Дети до 7 лет:</span><span class="p-dots" aria-hidden="true"></span><span class="pv">Бесплатно <span>₽</span></div>
       </div>
 
       <button class="btn-green book-btn" data-book-btn>
@@ -2062,7 +2062,7 @@
                         </span>
                     </div>
 
-                    <button class="footer-call" id="footerCallBtn">
+                    <button class="footer-call" id="footerCallBtn" type="button" onclick="event.preventDefault(); var callModal = document.getElementById('modal'); if (callModal) { callModal.style.display = 'flex'; callModal.classList.add('modal-active'); }">
                         Заказать звонок
                     </button>
                 </div>
@@ -2327,6 +2327,24 @@
         </div>
         </div>
     </footer>
+
+    <div class="scroll-top" id="scrollTop">↑</div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="closeModal">&times;</span>
+            <h2>Заказать звонок</h2>
+            <form id="callRequestForm" class="call-modal-form">
+                <input type="text" name="name" placeholder="Ваше имя" required>
+                <input type="tel" name="phone" placeholder="Телефон" required>
+                <label class="policy">
+                    <input type="checkbox" required class="policy-check" name="policy">
+                    <p>Я согласен с <a href="#">политикой конфиденциальности</a></p>
+                </label>
+                <button type="submit" class="submit-btn">Отправить</button>
+            </form>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="../js/excursion.js"></script>
