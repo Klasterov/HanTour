@@ -8,8 +8,8 @@ html {
 body {
     margin: 0;
     font-family: 'Mulish', sans-serif;
-    overflow-x: clip;
     max-width: 100vw;
+    overflow-x: hidden;
 }
 
 .mobile-header {
@@ -543,6 +543,7 @@ hr {
 }
 
 .call-btn {
+    display: inline-block;
     margin-left: 100px;
     border: 2px solid #17AA00;
     background: white;
@@ -553,6 +554,7 @@ hr {
     height: 40px;
     font-size: 16px;
     font-family: Mulish, sans-serif;
+    padding: 0;
 }
 
 .call-btn:hover {
@@ -631,6 +633,7 @@ hr {
     -webkit-backdrop-filter: blur(6px);
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -646,7 +649,13 @@ hr {
     top: 10px;
     right: 15px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 28px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
 .modal input {
@@ -1929,6 +1938,7 @@ hr {
 }
 
 .about {
+    width: auto;
     padding: 60px 20px;
 }
 
@@ -2167,7 +2177,7 @@ hr {
 
 .attractions-gallery .attractions-cards {
     display: flex;
-    gap: 16px;
+    gap: 13px;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
     touch-action: pan-y;
@@ -2237,11 +2247,10 @@ hr {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     border: none;
     border-radius: 50%;
-    background: #fff;
     padding: 0;
     display: none;
     align-items: center;
@@ -2272,8 +2281,8 @@ hr {
 }
 
 .attractions-gallery-arrow svg {
-    width: 30px;
-    height: 30px;
+    width: 72px;
+    height: 72px;
     display: block;
     overflow: visible;
 }
@@ -2703,7 +2712,6 @@ hr {
 }
 
 .topics-modal .modal-body {
-    display: flex;
     flex-direction: row;
     gap: 20px;
     flex-wrap: wrap;

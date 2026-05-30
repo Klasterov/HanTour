@@ -1,0 +1,61 @@
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat Regular"), local("Montserrat-Regular"),
+    url("../fonts/Montserrat-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Montserrat";
+  src: local("Montserrat Bold"), local("Montserrat-Bold"),
+    url("../fonts/Montserrat-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aurora Script";
+  src: local("Aurora Script"), local("Aurora-Script"),
+    url("../fonts/aurorascript.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Palatino";
+  src: local("Palatino"), local("Palatino-Bold"),
+    url("../fonts/Palatino-Bold.woff2") format("woff2"),
+    url("../fonts/Palatino-Bold.woff") format("woff"),
+    url("../fonts/Palatino-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Palatino";
+  src: local("Palatino"), local("Palatino-Regular"),
+    url("../fonts/Palatino-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+}
+
+.font-1 {
+  font-family: "Palatino";
+  font-weight: 700;
+}
+
+.font-2 {
+  font-family: "Aurora Script";
+  font-weight: 400;
+}
