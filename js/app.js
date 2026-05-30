@@ -1,17 +1,21 @@
-const callBtn = document.getElementById("callBtn");
+﻿const callBtn = document.getElementById("callBtn");
 const modal = document.getElementById("modal");
 const closeModal = document.getElementById("closeModal");
 
-callBtn.onclick = () => {
-  modal.style.display = "flex";
-};
+if (callBtn && modal) {
+  callBtn.onclick = () => {
+    modal.style.display = "flex";
+  };
+}
 
-closeModal.onclick = () => {
-  modal.style.display = "none";
-};
+if (closeModal && modal) {
+  closeModal.onclick = () => {
+    modal.style.display = "none";
+  };
+}
 
 window.onclick = (e) => {
-  if (e.target === modal) {
+  if (modal && e.target === modal) {
     modal.style.display = "none";
   }
 };
@@ -30,6 +34,14 @@ if (moreCategoriesBtn) {
     e.stopPropagation();
     const topicsModal = document.getElementById("topicsModal");
     if (topicsModal) {
+      const modalTitle = topicsModal.querySelector(".modal-header h3");
+      const modalBody = topicsModal.querySelector(".modal-body");
+      if (modalTitle && topicsModal.dataset.defaultTitle) {
+        modalTitle.textContent = topicsModal.dataset.defaultTitle;
+      }
+      if (modalBody && topicsModal.dataset.defaultBody) {
+        modalBody.innerHTML = topicsModal.dataset.defaultBody;
+      }
       topicsModal.style.display = "flex";
       document.body.style.overflow = "hidden";
     }
@@ -51,6 +63,7 @@ if (closeCategories) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const heroImage = document.querySelector('.hero-image');
+  if (!heroImage) return;
 
   if (heroImage.complete) {
     heroImage.classList.add('loaded');
@@ -82,7 +95,7 @@ document.querySelectorAll(".book-btn").forEach(btn => {
     const card = btn.closest(".excursion-card");
     if (!card) return;
     e.stopPropagation();
-    window.location.href = resolveExcursionLink(card?.dataset.link);
+    window.location.href = resolveExcursionLink(card.dataset.link);
   });
 });
 
@@ -106,6 +119,7 @@ const monthPicker = document.getElementById("monthPicker");
 const selectedDateText = document.getElementById("selectedDateText");
 const scheduleList = document.getElementById("scheduleList");
 
+if (monthEl && calendarDates && monthPicker && selectedDateText && scheduleList) {
 function renderCalendar() {
   monthEl.textContent = months[currentDate.getMonth()] + " " + currentDate.getFullYear();
   calendarDates.innerHTML = "";
@@ -231,36 +245,43 @@ monthEl.onclick = ()=>{
   });
 };
 
-document.getElementById("prevMonth").onclick=()=>{
+const prevMonthBtn = document.getElementById("prevMonth");
+const nextMonthBtn = document.getElementById("nextMonth");
+const prevDayBtn = document.getElementById("prevDay");
+const nextDayBtn = document.getElementById("nextDay");
+const fullScheduleBtn = document.getElementById("fullSchedule");
+
+if (prevMonthBtn) prevMonthBtn.onclick=()=>{
   currentDate.setMonth(currentDate.getMonth()-1);
   renderCalendar();
   renderSchedule();
 };
-document.getElementById("nextMonth").onclick=()=>{
+if (nextMonthBtn) nextMonthBtn.onclick=()=>{
   currentDate.setMonth(currentDate.getMonth()+1);
   renderCalendar();
   renderSchedule();
 };
 
-document.getElementById("prevDay").onclick=()=>{
+if (prevDayBtn) prevDayBtn.onclick=()=>{
   currentDate.setDate(currentDate.getDate()-1);
   selectedDate = new Date(currentDate);
   renderCalendar();
   renderSchedule();
 };
-document.getElementById("nextDay").onclick=()=>{
+if (nextDayBtn) nextDayBtn.onclick=()=>{
   currentDate.setDate(currentDate.getDate()+1);
   selectedDate = new Date(currentDate);
   renderCalendar();
   renderSchedule();
 };
 
-document.getElementById("fullSchedule").onclick=()=>{
+if (fullScheduleBtn) fullScheduleBtn.onclick=()=>{
   window.location.href="schedule.html";
 };
 
 renderCalendar();
 renderSchedule();
+}
 
 function openYandex() {
     window.open('https://yandex.ru/maps', '_blank');
@@ -275,40 +296,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!slider || !prevBtn || !nextBtn || !progressBar || !progressTrack) return;
 
-    const cards = Array.from(slider.querySelectorAll('.review-card'));
+    const cards = document.querySelectorAll('.review-card');
+    const cardsPerView = 3;
     let currentIndex = 0;
     let isDragging = false;
 
-    function getGap() {
-        const style = window.getComputedStyle(slider);
-        return parseFloat(style.columnGap || style.gap) || 16;
-    }
-
-    function getCardsPerView() {
-        const cardWidth = cards[0] ? cards[0].offsetWidth : 0;
-        const containerWidth = slider.parentElement ? slider.parentElement.clientWidth : 0;
-        if (!cardWidth || !containerWidth) return 1;
-        return Math.max(1, Math.floor((containerWidth + getGap()) / (cardWidth + getGap())));
-    }
-
-    function getMaxIndex() {
-        return Math.max(cards.length - getCardsPerView(), 0);
-    }
-
     function updateSlider() {
-        const cardWidth = cards[0] ? cards[0].offsetWidth : 0;
-        const gap = getGap();
-        currentIndex = Math.max(0, Math.min(currentIndex, getMaxIndex()));
+        const cardWidth = cards[0].offsetWidth;
+        const gap = 16;
         const offset = -currentIndex * (cardWidth + gap);
         slider.style.transform = `translateX(${offset}px)`;
         prevBtn.disabled = currentIndex === 0;
-        nextBtn.disabled = currentIndex >= getMaxIndex();
+        nextBtn.disabled = currentIndex >= cards.length - cardsPerView;
         updateProgressBar();
     }
 
     function updateProgressBar() {
-        const cardsPerView = getCardsPerView();
-        const maxScroll = Math.max(getMaxIndex(), 1);
+        const maxScroll = Math.max(cards.length - cardsPerView, 1);
         const percentage = currentIndex / maxScroll;
         const trackWidth = progressTrack.offsetWidth;
         const barWidth = Math.max(trackWidth * (cardsPerView / cards.length), 40);
@@ -320,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (direction === 'prev' && currentIndex > 0) {
             currentIndex--;
             updateSlider();
-        } else if (direction === 'next' && currentIndex < getMaxIndex()) {
+        } else if (direction === 'next' && currentIndex < cards.length - cardsPerView) {
             currentIndex++;
             updateSlider();
         }
@@ -334,11 +338,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isDragging) {
             const rect = progressTrack.getBoundingClientRect();
             const x = e.clientX - rect.left;
-            const maxScroll = Math.max(getMaxIndex(), 1);
+            const maxScroll = Math.max(cards.length - cardsPerView, 1);
             const barWidth = progressBar.offsetWidth;
             const maxX = rect.width - barWidth;
             currentIndex = Math.round((x / maxX) * maxScroll);
-            currentIndex = Math.max(0, Math.min(currentIndex, getMaxIndex()));
+            currentIndex = Math.max(0, Math.min(currentIndex, cards.length - cardsPerView));
             updateSlider();
         }
     });
@@ -376,7 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     updateSlider();
-    window.addEventListener('resize', updateSlider);
+    window.addEventListener('resize', updateProgressBar);
 });
 
 
@@ -497,7 +501,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 const content = document.getElementById('aboutContent');
   const toggle = document.getElementById('aboutToggle');
   const toggleText = document.getElementById('aboutToggleText');
-  const arrow = toggle?.querySelector('.arrow');
+  const arrow = toggle ? toggle.querySelector('.arrow') : null;
   let savedScrollY = null;
 
   if (content && toggle && toggleText) {
@@ -535,86 +539,45 @@ const content = document.getElementById('aboutContent');
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const cardsContainer = document.getElementById("gallerySlider");
-    const prevArrow = document.getElementById("galleryPrev");
-    const nextArrow = document.getElementById("galleryNext");
-    const wrapper = cardsContainer ? cardsContainer.closest(".attractions-cards-wrapper") : null;
+  return;
+  const cardsContainer = document.querySelector(".cards");
+  const rightArrow = document.querySelector(".arrow.right");
 
-    if (!cardsContainer || !prevArrow || !nextArrow || !wrapper) return;
+  let index = 0;
+  const cardWidth = 270;
+  const visibleCards = 3; 
+  const totalCards = cardsContainer.children.length;
 
-    const cards = Array.from(cardsContainer.children);
-    let index = 0;
+  function updateSlider() {
+    const offset = -index * cardWidth;
+    cardsContainer.style.transform = `translateX(${offset}px)`;
+  }
 
-    function getGap() {
-      const style = window.getComputedStyle(cardsContainer);
-      return parseFloat(style.columnGap || style.gap) || 0;
+  rightArrow.addEventListener("click", () => {
+    index++;
+    if (index > totalCards - visibleCards) {
+      index = 0;
     }
-
-    function getStep() {
-      const firstCard = cards[0];
-      if (!firstCard) return 0;
-      return firstCard.getBoundingClientRect().width + getGap();
-    }
-
-    function getMaxIndex() {
-      const step = getStep();
-      if (!step) return 0;
-      const visibleCards = Math.max(1, Math.floor((wrapper.clientWidth + getGap()) / step));
-      return Math.max(0, cards.length - visibleCards);
-    }
-
-    function updateSlider() {
-      const maxIndex = getMaxIndex();
-      index = Math.max(0, Math.min(index, maxIndex));
-      cardsContainer.style.transform = `translateX(${-index * getStep()}px)`;
-      prevArrow.disabled = index === 0;
-      nextArrow.disabled = index === maxIndex;
-    }
-
-    prevArrow.addEventListener("click", () => {
-      index -= 1;
-      updateSlider();
-    });
-
-    nextArrow.addEventListener("click", () => {
-      index += 1;
-      updateSlider();
-    });
-
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let isSwiping = false;
-
-    cardsContainer.addEventListener("touchstart", (event) => {
-      touchStartX = event.touches[0].clientX;
-      touchStartY = event.touches[0].clientY;
-      isSwiping = false;
-    }, { passive: true });
-
-    cardsContainer.addEventListener("touchmove", (event) => {
-      const dx = Math.abs(event.touches[0].clientX - touchStartX);
-      const dy = Math.abs(event.touches[0].clientY - touchStartY);
-      if (dx > dy && dx > 8) {
-        isSwiping = true;
-        event.preventDefault();
-      }
-    }, { passive: false });
-
-    cardsContainer.addEventListener("touchend", (event) => {
-      if (!isSwiping) return;
-
-      const diff = touchStartX - event.changedTouches[0].clientX;
-      if (Math.abs(diff) > 40) {
-        index += diff > 0 ? 1 : -1;
-        updateSlider();
-      }
-
-      isSwiping = false;
-    }, { passive: true });
-
-    window.addEventListener("resize", updateSlider);
     updateSlider();
   });
+
+  document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("mouseenter", () => {
+      card.style.transform = "scale(1.1)";
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "scale(1)";
+    });
+  });
+
+  const showAll = document.querySelector(".show-all");
+  showAll.addEventListener("mouseenter", () => {
+    showAll.style.transform = "scale(1.2)";
+  });
+  showAll.addEventListener("mouseleave", () => {
+    showAll.style.transform = "scale(1)";
+  });
+});
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -698,21 +661,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const modalTitle = topicsModal ? topicsModal.querySelector("h3") : null;
   const modalBody = topicsModal ? topicsModal.querySelector(".modal-body") : null;
 
+  if (topicsModal && modalTitle && modalBody) {
+    topicsModal.dataset.defaultTitle = modalTitle.textContent.trim();
+    topicsModal.dataset.defaultBody = modalBody.innerHTML;
+  }
+
   function openTopicsModal(items, title) {
     if (!topicsModal || !modalBody) return;
     if (modalTitle) modalTitle.textContent = title || "Все темы";
     modalBody.innerHTML = "";
+    const tagsWrap = document.createElement("div");
+    tagsWrap.className = "filter-tags";
     items.forEach(item => {
       const div = document.createElement("div");
       div.className = "topic-item";
       div.textContent = item.textContent.trim();
       const cat = item.dataset.category || item.textContent.trim();
+      div.dataset.category = cat;
       div.style.cursor = "pointer";
-      div.addEventListener("click", () => {
-        window.location.href = "catalog.html?category=" + encodeURIComponent(cat);
-      });
-      modalBody.appendChild(div);
+      tagsWrap.appendChild(div);
     });
+    modalBody.appendChild(tagsWrap);
     topicsModal.style.display = "flex";
     document.body.style.overflow = "hidden";
   }
@@ -742,6 +711,13 @@ document.addEventListener("DOMContentLoaded", () => {
       if (e.target === topicsModal) {
         topicsModal.style.display = "none";
         document.body.style.overflow = "";
+        return;
+      }
+
+      const topicItem = e.target.closest(".topic-item:not(.more-btn)");
+      if (topicItem && topicsModal.contains(topicItem)) {
+        const cat = topicItem.dataset.category || topicItem.textContent.trim();
+        window.location.href = "catalog.html?category=" + encodeURIComponent(cat);
       }
     });
   }
@@ -777,6 +753,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const phoneInput = callRequestForm.querySelector('input[name="phone"]');
     const policyCheck = callRequestForm.querySelector('.policy-check');
 
+    if (!nameInput || !phoneInput || !policyCheck) return;
+
     const ensureErrorNode = (field, key) => {
       let node = callRequestForm.querySelector(`.form-error[data-for="call-${key}"]`);
       if (node) return node;
@@ -786,7 +764,8 @@ document.addEventListener("DOMContentLoaded", () => {
       node.dataset.for = `call-${key}`;
 
       if (key === "policy") {
-        field.closest(".policy").insertAdjacentElement("afterend", node);
+        const policyWrap = field.closest(".policy");
+        if (policyWrap) policyWrap.insertAdjacentElement("afterend", node);
       } else {
         field.insertAdjacentElement("afterend", node);
       }
@@ -799,7 +778,8 @@ document.addEventListener("DOMContentLoaded", () => {
       node.textContent = message;
       node.classList.add("visible");
       if (key === "policy") {
-        field.closest(".policy").classList.add("policy--invalid");
+        const policyWrap = field.closest(".policy");
+        if (policyWrap) policyWrap.classList.add("policy--invalid");
       } else {
         field.classList.add("input--invalid");
       }
@@ -812,7 +792,8 @@ document.addEventListener("DOMContentLoaded", () => {
         node.classList.remove("visible");
       }
       if (key === "policy") {
-        field.closest(".policy").classList.remove("policy--invalid");
+        const policyWrap = field.closest(".policy");
+        if (policyWrap) policyWrap.classList.remove("policy--invalid");
       } else {
         field.classList.remove("input--invalid");
       }
@@ -887,6 +868,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const questionInput = contactForm.querySelector('textarea[name="question"]');
     const policyCheck = contactForm.querySelector(".policy-check");
 
+    if (!nameInput || !phoneInput || !questionInput || !policyCheck) return;
+
     const errorSelectors = [
       [nameInput, "name"],
       [phoneInput, "phone"],
@@ -904,7 +887,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (key === "policy") {
         const policyWrap = field.closest(".policy");
-        policyWrap.insertAdjacentElement("afterend", node);
+        if (policyWrap) policyWrap.insertAdjacentElement("afterend", node);
       } else {
         field.insertAdjacentElement("afterend", node);
       }
@@ -918,7 +901,8 @@ document.addEventListener("DOMContentLoaded", () => {
       node.classList.add("visible");
 
       if (key === "policy") {
-        field.closest(".policy").classList.add("policy--invalid");
+        const policyWrap = field.closest(".policy");
+        if (policyWrap) policyWrap.classList.add("policy--invalid");
       } else {
         field.classList.add("input--invalid");
       }
@@ -932,7 +916,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (key === "policy") {
-        field.closest(".policy").classList.remove("policy--invalid");
+        const policyWrap = field.closest(".policy");
+        if (policyWrap) policyWrap.classList.remove("policy--invalid");
       } else {
         field.classList.remove("input--invalid");
       }
@@ -1044,18 +1029,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const footerCallBtn = document.getElementById("footerCallBtn");
   const callModal = document.getElementById("modal");
 
-  if (footerCallBtn && callModal) {
-    footerCallBtn.addEventListener("click", (event) => {
-      event.preventDefault();
-      callModal.style.display = "flex";
-      callModal.classList.add("modal-active");
-    });
-  }
+  if (footerCallBtn && callModal) footerCallBtn.addEventListener("click", () => {
+    callModal.style.display = "flex";
+  });
 
   const scrollTopBtn = document.getElementById("scrollTop");
+  if (!scrollTopBtn) return;
 
   window.addEventListener("scroll", () => {
-    if (!scrollTopBtn) return;
     if (window.scrollY > 10) {
       scrollTopBtn.style.display = "flex";
     } else {
@@ -1063,102 +1044,188 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  if (scrollTopBtn) {
-    scrollTopBtn.addEventListener("click", () => {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+  scrollTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
     });
-  }
+  });
 
 });
 
-(function() {
+(function initMobileMenu() {
+  if (window.__khanTourMobileMenuInitialized) return;
+  window.__khanTourMobileMenuInitialized = true;
 
-  const mobPhoneBtn = document.getElementById('mobPhoneBtn');
-  const mobPhoneModal = document.getElementById('mobPhoneModal');
-  const mobPhoneModalClose = document.getElementById('mobPhoneModalClose');
-
-  if (mobPhoneBtn && mobPhoneModal) {
-    mobPhoneBtn.addEventListener('click', () => {
-      mobPhoneModal.classList.add('open');
-    });
-
-    mobPhoneModalClose.addEventListener('click', () => {
-      mobPhoneModal.classList.remove('open');
-    });
-
-    mobPhoneModal.addEventListener('click', (e) => {
-      if (e.target === mobPhoneModal) mobPhoneModal.classList.remove('open');
-    });
-  }
-
-  const mobBurger = document.getElementById('mobBurger');
-  const mobMenuDrawer = document.getElementById('mobMenuDrawer');
-  const mobMenuOverlay = document.getElementById('mobMenuOverlay');
-  const mobMenuClose = document.getElementById('mobMenuClose');
-  const mobMenuCallBtn = document.getElementById('mobMenuCallBtn');
-
-  function openDrawer() {
-    mobMenuDrawer.classList.add('open');
-    mobMenuOverlay.classList.add('open');
-    mobBurger.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    mobMenuDrawer.classList.remove('open');
-    mobMenuOverlay.classList.remove('open');
-    mobBurger.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  if (mobBurger) {
-    mobBurger.addEventListener('click', () => {
-      if (mobMenuDrawer.classList.contains('open')) {
-        closeDrawer();
-      } else {
-        openDrawer();
-      }
-    });
-  }
-
-  if (mobMenuClose) mobMenuClose.addEventListener('click', closeDrawer);
-  if (mobMenuOverlay) mobMenuOverlay.addEventListener('click', closeDrawer);
-
-  if (mobMenuCallBtn) {
-    mobMenuCallBtn.addEventListener('click', () => {
-      closeDrawer();
-      const callModal = document.getElementById('modal');
-      if (callModal) callModal.style.display = 'flex';
-    });
-  }
-
-})();
-
-(function initCallModalTriggers() {
-  document.addEventListener('click', (event) => {
-    const trigger = event.target.closest('#callBtn, #footerCallBtn, #mobMenuCallBtn');
-    if (!trigger) return;
-
-    const callModal = document.getElementById('modal');
-    if (!callModal) return;
-
-    event.preventDefault();
-    callModal.style.display = 'flex';
-    callModal.classList.add('modal-active');
-
-    const mobMenuDrawer = document.getElementById('mobMenuDrawer');
-    const mobMenuOverlay = document.getElementById('mobMenuOverlay');
-    const mobBurger = document.getElementById('mobBurger');
-
-    if (mobMenuDrawer) mobMenuDrawer.classList.remove('open');
-    if (mobMenuOverlay) mobMenuOverlay.classList.remove('open');
-    if (mobBurger) mobBurger.classList.remove('active');
-    document.body.style.overflow = '';
+  const getMobileMenu = () => ({
+    burger: document.getElementById('mobBurger'),
+    drawer: document.getElementById('mobMenuDrawer'),
+    overlay: document.getElementById('mobMenuOverlay'),
   });
+
+  const setDrawerState = (isOpen) => {
+    const { burger, drawer, overlay } = getMobileMenu();
+    if (!burger || !drawer || !overlay) return;
+
+    drawer.classList.toggle('open', isOpen);
+    drawer.classList.toggle('active', isOpen);
+    overlay.classList.toggle('open', isOpen);
+    overlay.classList.toggle('active', isOpen);
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    drawer.style.display = isOpen ? 'flex' : '';
+    drawer.style.transform = isOpen ? 'translateX(0)' : '';
+    drawer.style.visibility = isOpen ? 'visible' : '';
+    overlay.style.display = isOpen ? 'block' : '';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  };
+
+  const openPhoneModal = () => {
+    const modal = document.getElementById('mobPhoneModal');
+    if (modal) {
+      modal.classList.add('open');
+      modal.style.display = 'flex';
+    }
+  };
+
+  const closePhoneModal = () => {
+    const modal = document.getElementById('mobPhoneModal');
+    if (modal) {
+      modal.classList.remove('open');
+      modal.style.display = '';
+    }
+  };
+
+  const openCallModal = () => {
+    const callModal = document.getElementById('modal');
+    if (callModal) callModal.style.display = 'flex';
+  };
+
+  document.addEventListener('click', (e) => {
+    const burger = e.target.closest('#mobBurger');
+    if (burger) {
+      e.preventDefault();
+      const drawer = document.getElementById('mobMenuDrawer');
+      setDrawerState(!(drawer && (drawer.classList.contains('open') || drawer.classList.contains('active'))));
+      return;
+    }
+
+    if (e.target.closest('#mobPhoneBtn')) {
+      e.preventDefault();
+      openPhoneModal();
+      return;
+    }
+
+    if (e.target.closest('#mobPhoneModalClose') || e.target === document.getElementById('mobPhoneModal')) {
+      e.preventDefault();
+      closePhoneModal();
+      return;
+    }
+
+    if (e.target.closest('#mobMenuClose') || e.target === document.getElementById('mobMenuOverlay')) {
+      e.preventDefault();
+      setDrawerState(false);
+      return;
+    }
+
+    if (e.target.closest('#mobMenuCallBtn')) {
+      e.preventDefault();
+      setDrawerState(false);
+      openCallModal();
+      return;
+    }
+
+    if (e.target.closest('#mobMenuDrawer a')) {
+      setDrawerState(false);
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      setDrawerState(false);
+      closePhoneModal();
+    }
+  });
+
+  const syncInitialState = () => {
+    const { burger, drawer } = getMobileMenu();
+    if (!burger || !drawer) return;
+    burger.setAttribute('aria-expanded', drawer.classList.contains('open') ? 'true' : 'false');
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncInitialState, { once: true });
+  } else {
+    syncInitialState();
+  }
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const slider = document.getElementById('gallerySlider');
+  const wrapper = slider ? slider.closest('.attractions-cards-wrapper') : null;
+  const prevBtn = document.getElementById('galleryPrev');
+  const nextBtn = document.getElementById('galleryNext');
+
+  if (!slider || !wrapper || !prevBtn || !nextBtn) return;
+
+  let offset = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchMoved = false;
+
+  const getGap = () => {
+    const styles = window.getComputedStyle(slider);
+    return parseFloat(styles.columnGap || styles.gap || '0') || 0;
+  };
+
+  const getStep = () => {
+    const firstCard = slider.querySelector('.card');
+    return firstCard ? firstCard.getBoundingClientRect().width + getGap() : wrapper.clientWidth;
+  };
+
+  const getMaxOffset = () => Math.max(0, slider.scrollWidth - wrapper.clientWidth);
+
+  const update = () => {
+    const maxOffset = getMaxOffset();
+    offset = Math.max(0, Math.min(offset, maxOffset));
+    slider.style.transform = `translateX(${-offset}px)`;
+    prevBtn.disabled = offset <= 1;
+    nextBtn.disabled = offset >= maxOffset - 1;
+  };
+
+  const move = (direction) => {
+    offset += direction * getStep();
+    update();
+  };
+
+  prevBtn.addEventListener('click', () => move(-1));
+  nextBtn.addEventListener('click', () => move(1));
+
+  slider.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchMoved = false;
+  }, { passive: true });
+
+  slider.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    const dx = touch.clientX - touchStartX;
+    const dy = touch.clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 12) {
+      touchMoved = true;
+    }
+  }, { passive: true });
+
+  slider.addEventListener('touchend', (e) => {
+    if (!touchMoved) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) move(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  window.addEventListener('resize', update);
+  update();
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('.layout .gallery') && document.getElementById('sec-route')) {
