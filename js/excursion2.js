@@ -931,78 +931,99 @@ function initBookingCounters() {
 })();
 
 (function initMobileNavigation() {
-  const mobPhoneBtn = document.getElementById('mobPhoneBtn');
-  const mobPhoneModal = document.getElementById('mobPhoneModal');
-  const mobPhoneModalClose = document.getElementById('mobPhoneModalClose');
+  if (window.__khanTourMobileMenuInitialized) return;
+  window.__khanTourMobileMenuInitialized = true;
 
-  const mobBurger = document.getElementById('mobBurger');
-  const mobMenuDrawer = document.getElementById('mobMenuDrawer');
-  const mobMenuOverlay = document.getElementById('mobMenuOverlay');
-  const mobMenuClose = document.getElementById('mobMenuClose');
-  const mobMenuCallBtn = document.getElementById('mobMenuCallBtn');
-
-  if (!mobBurger || !mobMenuDrawer || !mobMenuOverlay || !mobMenuClose) return;
-
-  function openDrawer() {
-    mobMenuDrawer.classList.add('open');
-    mobMenuOverlay.classList.add('open');
-    mobBurger.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    mobMenuDrawer.classList.remove('open');
-    mobMenuOverlay.classList.remove('open');
-    mobBurger.classList.remove('active');
-    document.body.style.overflow = '';
-  }
-
-  function openPhoneModal() {
-    if (!mobPhoneModal) return;
-    mobPhoneModal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closePhoneModal() {
-    if (!mobPhoneModal) return;
-    mobPhoneModal.classList.remove('open');
-    if (!mobMenuDrawer.classList.contains('open')) {
-      document.body.style.overflow = '';
-    }
-  }
-
-  /*mobBurger.addEventListener('click', () => {
-    if (mobMenuDrawer.classList.contains('open')) closeDrawer();
-    else openDrawer();
-  });*/
-  mobMenuClose.addEventListener('click', closeDrawer);
-  mobMenuOverlay.addEventListener('click', closeDrawer);
-
-  mobMenuDrawer.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', closeDrawer);
+  const getMobileMenu = () => ({
+    burger: document.getElementById('mobBurger'),
+    drawer: document.getElementById('mobMenuDrawer'),
+    overlay: document.getElementById('mobMenuOverlay'),
   });
 
-  if (mobPhoneBtn) mobPhoneBtn.addEventListener('click', openPhoneModal);
-  if (mobPhoneModalClose) mobPhoneModalClose.addEventListener('click', closePhoneModal);
-  if (mobPhoneModal) {
-    mobPhoneModal.addEventListener('click', (e) => {
-      if (e.target === mobPhoneModal) closePhoneModal();
-    });
-  }
-  /*if (mobMenuCallBtn) {
-    mobMenuCallBtn.addEventListener('click', () => {
-      if (window.location.pathname === '/' || window.location.pathname === '') return;
+  const setDrawerState = (isOpen) => {
+    const { burger, drawer, overlay } = getMobileMenu();
+    if (!burger || !drawer || !overlay) return;
 
-      closeDrawer();
+    drawer.classList.toggle('open', isOpen);
+    drawer.classList.toggle('active', isOpen);
+    overlay.classList.toggle('open', isOpen);
+    overlay.classList.toggle('active', isOpen);
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    drawer.style.display = isOpen ? 'flex' : '';
+    drawer.style.transform = isOpen ? 'translateX(0)' : '';
+    drawer.style.visibility = isOpen ? 'visible' : '';
+    overlay.style.display = isOpen ? 'block' : '';
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  };
+
+  const openPhoneModal = () => {
+    const modal = document.getElementById('mobPhoneModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closePhoneModal = () => {
+    const modal = document.getElementById('mobPhoneModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+
+    const drawer = document.getElementById('mobMenuDrawer');
+    if (!drawer || !drawer.classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
+  };
+
+  document.addEventListener('click', (e) => {
+    const burger = e.target.closest('#mobBurger');
+    if (burger) {
+      e.preventDefault();
+      const drawer = document.getElementById('mobMenuDrawer');
+      setDrawerState(!(drawer && (drawer.classList.contains('open') || drawer.classList.contains('active'))));
+      return;
+    }
+
+    if (e.target.closest('#mobPhoneBtn')) {
+      e.preventDefault();
       openPhoneModal();
-    });
-  }*/
+      return;
+    }
+
+    if (e.target.closest('#mobPhoneModalClose') || (e.target.closest('#mobPhoneModal') && !e.target.closest('.mob-phone-modal-content'))) {
+      e.preventDefault();
+      closePhoneModal();
+      return;
+    }
+
+    if (e.target.closest('#mobMenuClose') || e.target === document.getElementById('mobMenuOverlay')) {
+      e.preventDefault();
+      setDrawerState(false);
+      return;
+    }
+
+    if (e.target.closest('#mobMenuCallBtn')) {
+      e.preventDefault();
+      setDrawerState(false);
+      openPhoneModal();
+      return;
+    }
+
+    if (e.target.closest('#mobMenuDrawer a')) {
+      setDrawerState(false);
+    }
+  });
 
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    closeDrawer();
+    setDrawerState(false);
     closePhoneModal();
   });
+
+  const { burger, drawer } = getMobileMenu();
+  if (burger && drawer) {
+    burger.setAttribute('aria-expanded', drawer.classList.contains('open') ? 'true' : 'false');
+  }
 })();
 
 const VISIBLE_COUNT = 11;

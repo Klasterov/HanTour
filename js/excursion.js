@@ -852,7 +852,6 @@ const bookingCalendarState = {
       const modal = document.getElementById('mobPhoneModal');
       if (!modal) return;
       modal.classList.add('open');
-      modal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
     };
 
@@ -860,7 +859,6 @@ const bookingCalendarState = {
       const modal = document.getElementById('mobPhoneModal');
       if (!modal) return;
       modal.classList.remove('open');
-      modal.style.display = '';
 
       const drawer = document.getElementById('mobMenuDrawer');
       if (!drawer || !drawer.classList.contains('open')) {
@@ -883,7 +881,7 @@ const bookingCalendarState = {
         return;
       }
 
-      if (e.target.closest('#mobPhoneModalClose') || e.target === document.getElementById('mobPhoneModal')) {
+      if (e.target.closest('#mobPhoneModalClose') || (e.target.closest('#mobPhoneModal') && !e.target.closest('.mob-phone-modal-content'))) {
         e.preventDefault();
         closePhoneModal();
         return;
@@ -1251,6 +1249,7 @@ const bookingCalendarState = {
       document.body.style.overflow = '';
     }
   };
+
 
 (function() {
   const slider = document.getElementById('slider');
@@ -1747,6 +1746,62 @@ const bookingCalendarState = {
   updateSlider();
 })();
 
+(function initTourReviewStarsEarly() {
+  function setup() {
+    const ratingRoot = document.getElementById('tourReviewStars');
+    const ratingInput = document.getElementById('tourReviewRating');
+    if (!ratingRoot || !ratingInput || ratingRoot.dataset.starsReady === '1') return;
+
+    ratingRoot.dataset.starsReady = '1';
+    const ratingButtons = Array.from(ratingRoot.querySelectorAll('.tour-star'));
+    let currentRating = Number(ratingInput.value) || 0;
+
+    function paint(value = currentRating) {
+      ratingButtons.forEach((btn) => {
+        const starValue = Number(btn.dataset.value || 0);
+        btn.classList.toggle('is-active', starValue <= value);
+        btn.setAttribute('aria-checked', String(starValue === currentRating));
+        btn.setAttribute('tabindex', starValue === (currentRating || 1) ? '0' : '-1');
+      });
+    }
+
+    function selectRating(value) {
+      currentRating = Math.max(1, Math.min(5, Number(value) || 0));
+      ratingInput.value = String(currentRating);
+      ratingRoot.classList.remove('is-invalid');
+      paint();
+    }
+
+    ratingButtons.forEach((btn) => {
+      const value = Number(btn.dataset.value || 0);
+      btn.type = 'button';
+      btn.setAttribute('role', 'radio');
+      btn.addEventListener('pointerenter', () => paint(value));
+      btn.addEventListener('focus', () => paint(value));
+      btn.addEventListener('click', (event) => {
+        event.preventDefault();
+        selectRating(value);
+      });
+      btn.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectRating(value);
+        }
+      });
+    });
+
+    ratingRoot.addEventListener('pointerleave', () => paint());
+    ratingRoot.addEventListener('focusout', () => paint());
+    paint();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+})();
+
 (function() {
   const root = document.getElementById('excTourReviews');
   if (!root) return;
@@ -1853,21 +1908,57 @@ const bookingCalendarState = {
     ratingButtons.forEach((btn) => {
       const starValue = Number(btn.dataset.value || 0);
       btn.classList.toggle('is-active', starValue <= value);
+      btn.setAttribute('aria-checked', String(starValue === currentRating));
     });
+  }
+
+  function setRating(value) {
+    currentRating = Math.max(1, Math.min(5, Number(value) || 0));
+    ratingInput.value = String(currentRating);
+    ratingRoot.classList.remove('is-invalid');
+    ratingButtons.forEach((btn) => {
+      const starValue = Number(btn.dataset.value || 0);
+      btn.setAttribute('tabindex', starValue === currentRating ? '0' : '-1');
+    });
+    paintRating();
   }
 
   ratingButtons.forEach((btn) => {
     const val = Number(btn.dataset.value || 0);
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', 'false');
+    btn.setAttribute('tabindex', val === 1 ? '0' : '-1');
+
     btn.addEventListener('mouseenter', () => paintRating(val));
-    btn.addEventListener('click', () => {
-      currentRating = val;
-      ratingInput.value = String(val);
-      ratingRoot.classList.remove('is-invalid');
-      paintRating();
+    btn.addEventListener('focus', () => paintRating(val));
+    btn.addEventListener('click', () => setRating(val));
+    btn.addEventListener('keydown', (event) => {
+      const key = event.key;
+      if (!['Enter', ' ', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(key)) return;
+
+      event.preventDefault();
+      const currentIndex = ratingButtons.indexOf(btn);
+      let nextIndex = currentIndex;
+
+      if (key === 'Enter' || key === ' ') {
+        setRating(val);
+        return;
+      }
+
+      if (key === 'ArrowRight' || key === 'ArrowUp') {
+        nextIndex = Math.min(ratingButtons.length - 1, currentIndex + 1);
+      } else {
+        nextIndex = Math.max(0, currentIndex - 1);
+      }
+
+      ratingButtons[nextIndex].focus();
+      setRating(Number(ratingButtons[nextIndex].dataset.value || 0));
     });
   });
 
   ratingRoot.addEventListener('mouseleave', () => paintRating());
+  ratingRoot.addEventListener('focusout', () => paintRating());
+  paintRating();
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -1876,14 +1967,15 @@ const bookingCalendarState = {
     const name = nameInput.value.trim();
     const text = textInput.value.trim();
     if (!name || !text) return;
-    if (currentRating < 1) {
+    const selectedRating = Number(ratingInput.value) || currentRating;
+    if (selectedRating < 1) {
       ratingRoot.classList.add('is-invalid');
       return;
     }
 
     const d = new Date();
     const date = d.toLocaleDateString('ru-RU', { day: '2-digit', month: 'long' });
-    reviews.unshift({ author: name, date, text, rating: currentRating });
+    reviews.unshift({ author: name, date, text, rating: selectedRating });
     currentPage = 1;
 
     try {
@@ -1895,6 +1987,9 @@ const bookingCalendarState = {
     form.reset();
     currentRating = 0;
     ratingInput.value = '0';
+    ratingButtons.forEach((btn, index) => {
+      btn.setAttribute('tabindex', index === 0 ? '0' : '-1');
+    });
     paintRating();
     openThanks();
   });

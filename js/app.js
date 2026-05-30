@@ -1,24 +1,56 @@
 ﻿const callBtn = document.getElementById("callBtn");
+const mobMenuCallBtn = document.getElementById("mobMenuCallBtn");
+const footerCallBtn = document.getElementById("footerCallBtn");
 const modal = document.getElementById("modal");
 const closeModal = document.getElementById("closeModal");
 
-if (callBtn && modal) {
-  callBtn.onclick = () => {
+function openCallModal() {
+  if (modal) {
     modal.style.display = "flex";
-  };
+  }
+}
+
+function closeCallModal() {
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+if (callBtn) {
+  callBtn.onclick = openCallModal;
+}
+
+if (mobMenuCallBtn) {
+  mobMenuCallBtn.onclick = openCallModal;
+}
+
+if (footerCallBtn) {
+  footerCallBtn.onclick = openCallModal;
 }
 
 if (closeModal && modal) {
-  closeModal.onclick = () => {
-    modal.style.display = "none";
-  };
+  closeModal.onclick = closeCallModal;
 }
 
 window.onclick = (e) => {
   if (modal && e.target === modal) {
-    modal.style.display = "none";
+    closeCallModal();
   }
 };
+
+function lockTopicsScroll() {
+  if (document.body.dataset.topicsScrollY) return;
+
+  const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+  document.body.dataset.topicsScrollY = String(scrollY);
+}
+
+function unlockTopicsScroll() {
+  const scrollY = Number(document.body.dataset.topicsScrollY || 0);
+
+  delete document.body.dataset.topicsScrollY;
+  window.scrollTo(0, scrollY);
+}
 
 document.querySelectorAll(".category[data-category]").forEach(item => {
   item.addEventListener("click", () => {
@@ -31,6 +63,7 @@ const moreCategoriesBtn = document.getElementById("moreCategoriesBtn");
 
 if (moreCategoriesBtn) {
   moreCategoriesBtn.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
     const topicsModal = document.getElementById("topicsModal");
     if (topicsModal) {
@@ -42,8 +75,8 @@ if (moreCategoriesBtn) {
       if (modalBody && topicsModal.dataset.defaultBody) {
         modalBody.innerHTML = topicsModal.dataset.defaultBody;
       }
+      lockTopicsScroll();
       topicsModal.style.display = "flex";
-      document.body.style.overflow = "hidden";
     }
   });
 }
@@ -682,12 +715,13 @@ document.addEventListener("DOMContentLoaded", () => {
       tagsWrap.appendChild(div);
     });
     modalBody.appendChild(tagsWrap);
+    lockTopicsScroll();
     topicsModal.style.display = "flex";
-    document.body.style.overflow = "hidden";
   }
 
   document.querySelectorAll(".more-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
+      e.preventDefault();
       e.stopPropagation();
       const group = btn.closest(".topics-group");
       const title = group ? group.querySelector("h3").textContent : "Все темы";
@@ -702,15 +736,27 @@ document.addEventListener("DOMContentLoaded", () => {
   if (closeTopics) {
     closeTopics.addEventListener("click", () => {
       topicsModal.style.display = "none";
-      document.body.style.overflow = "";
+      unlockTopicsScroll();
     });
   }
 
   if (topicsModal) {
+    topicsModal.addEventListener("wheel", (e) => {
+      if (!e.target.closest(".topics-modal-content")) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    topicsModal.addEventListener("touchmove", (e) => {
+      if (!e.target.closest(".topics-modal-content")) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
     topicsModal.addEventListener("click", (e) => {
       if (e.target === topicsModal) {
         topicsModal.style.display = "none";
-        document.body.style.overflow = "";
+        unlockTopicsScroll();
         return;
       }
 
@@ -1084,7 +1130,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('mobPhoneModal');
     if (modal) {
       modal.classList.add('open');
-      modal.style.display = 'flex';
     }
   };
 
@@ -1092,7 +1137,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById('mobPhoneModal');
     if (modal) {
       modal.classList.remove('open');
-      modal.style.display = '';
     }
   };
 
@@ -1116,7 +1160,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (e.target.closest('#mobPhoneModalClose') || e.target === document.getElementById('mobPhoneModal')) {
+    if (e.target.closest('#mobPhoneModalClose') || (e.target.closest('#mobPhoneModal') && !e.target.closest('.mob-phone-modal-content'))) {
       e.preventDefault();
       closePhoneModal();
       return;
