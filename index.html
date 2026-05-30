@@ -1320,8 +1320,22 @@
                         <div class="progress-track">
                             <div class="progress-bar" id="progress"></div>
                         </div>
-                        <button id="prev">‹</button>
-                        <button id="next">›</button>
+                        <div class="arrow-group">
+                        <button class="arrow prev" id="prev">                            
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="39.5" y="39.5" width="39" height="39" rx="19.5" transform="rotate(-180 39.5 39.5)" fill="white"/>
+<rect x="39.5" y="39.5" width="39" height="39" rx="19.5" transform="rotate(-180 39.5 39.5)" stroke="#E5E5EB"/>
+<path d="M21.4497 15.0503L16.5 20L21.4497 24.9498" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+                        </button>
+                        <button class="arrow next" id="next">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="0.5" y="0.5" width="39" height="39" rx="19.5" fill="white"/>
+<rect x="0.5" y="0.5" width="39" height="39" rx="19.5" stroke="#E5E5EB"/>
+<path d="M18.5503 24.9497L23.5 20L18.5503 15.0503" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+                        </button>
+                        </div>
                     </div>
 
                     <a href="https://yandex.ru/maps" target="_blank" class="reviews-all-link-mobile">
@@ -2235,51 +2249,79 @@
     <div class="topics-modal" id="topicsModal">
         <div class="topics-modal-content">
             <div class="modal-header">
-                <h3>Все темы</h3>
-                <span id="closeTopics">&times;</span>
+                <h3>Фильтры</h3>
+                <button id="closeTopics" type="button" aria-label="Закрыть">&times;</button>
             </div>
 
             <div class="modal-body">
-                <div class="topic-item">Индивидуальные экскурсии</div>
-                <div class="topic-item">Групповые экскурсии</div>
-                <div class="topic-item">Школьные экскурсии</div>
-                <div class="topic-item">Речные прогулки</div>
-                <div class="topic-item">Экскурси <div class="topic-item">Экскурсии по ночной Казани</div>
-                    <div class="topic-item">Автобусные экскурсии</div>
-                    <div class="topic-item">Пешеходная экскурсия</div>
-                    <div class="topic-item">Дворец земледельцев</div>
-                    <div class="topic-item">Театр "Экият"</div>
+                <div class="filter-section">
+                    <div class="filter-section-title">Категория</div>
+                    <div class="filter-tags">
+                        <div class="topic-item" data-category="Индивидуальные экскурсии">Индивидуальные экскурсии</div>
+                        <div class="topic-item" data-category="Групповые экскурсии в Казани">Групповые экскурсии в Казани</div>
+                        <div class="topic-item" data-category="Школьные экскурсии">Школьные экскурсии</div>
+                        <div class="topic-item" data-category="Речные прогулки">Теплоходные экскурсии в Казани</div>
+                        <div class="topic-item" data-category="Пешеходная экскурсия по Казани">Пешеходная экскурсия по Казани</div>
+                        <div class="topic-item" data-category="Экскурсия по Казани на автобусе">Экскурсия по Казани на автобусе</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-section-title">Достопримечательности</div>
+                    <div class="filter-tags">
+                        <div class="topic-item">По старо татарской слободе</div>
+                        <div class="topic-item">Храм всех религий</div>
+                        <div class="topic-item">Улица Баумана Казань</div>
+                        <div class="topic-item">Дворец земледельцев</div>
+                        <div class="topic-item">Экскурсия в Раифский</div>
+                        <div class="topic-item">Кул шариф</div>
+                        <div class="topic-item">Театр экият</div>
+                        <div class="topic-item">Экскурсия туган авылым</div>
+                        <div class="topic-item">Башня сююмбике</div>
+                        <div class="topic-item">Казань арена</div>
+                        <div class="topic-item">Казань в парках</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <div class="filter-section-title">Форматы</div>
+                    <div class="filter-tags">
+                        <div class="topic-item">Казань экскурсии выходного дня</div>
+                        <div class="topic-item">Авторские экскурсии Казань</div>
+                        <div class="topic-item">Казань экскурсии для детей</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="all-cats-modal" id="allCatsModal">
-            <div class="all-cats-modal-content">
-                <div class="all-cats-modal-header">
-                    <h3>Все категории</h3>
-                    <button class="all-cats-close" id="allCatsClose">&times;</button>
-                </div>
-                <ul class="all-cats-list">
-                    <li data-category="Речные прогулки Казани">Речные прогулки Казани</li>
-                    <li data-category="Экскурсии по ночной Казани">Экскурсии по ночной Казани</li>
-                    <li data-category="Групповые экскурсии">Групповые экскурсии</li>
-                    <li data-category="Автобусные экскурсии по Казани">Автобусные экскурсии по Казани</li>
-                    <li data-category="Индивидуальные экскурсии">Индивидуальные экскурсии</li>
-                    <li data-category="Дворец земледельцев">Дворец земледельцев</li>
-                    <li data-category="Пешеходная экскурсия по Казани">Пешеходная экскурсия по Казани</li>
-                    <li data-category="Театр Экият">Театр "Экият"</li>
-                    <li data-category="Школьные экскурсии">Школьные экскурсии</li>
-                    <li data-category="Речные прогулки">Речные прогулки</li>
-                    <li data-category="Казанский Кремль">Казанский Кремль</li>
-                    <li data-category="Мечеть Кул Шариф">Мечеть Кул Шариф</li>
-                    <li data-category="Старо-татарская слобода">Старо-татарская слобода</li>
-                    <li data-category="Башня Сююмбике">Башня Сююмбике</li>
-                    <li data-category="Улица Баумана">Улица Баумана</li>
-                </ul>
+    <div class="all-cats-modal" id="allCatsModal">
+        <div class="all-cats-modal-content">
+            <div class="all-cats-modal-header">
+                <h3>Все категории</h3>
+                <button class="all-cats-close" id="allCatsClose">&times;</button>
             </div>
+            <ul class="all-cats-list">
+                <li data-category="Речные прогулки Казани">Речные прогулки Казани</li>
+                <li data-category="Экскурсии по ночной Казани">Экскурсии по ночной Казани</li>
+                <li data-category="Групповые экскурсии">Групповые экскурсии</li>
+                <li data-category="Автобусные экскурсии по Казани">Автобусные экскурсии по Казани</li>
+                <li data-category="Индивидуальные экскурсии">Индивидуальные экскурсии</li>
+                <li data-category="Дворец земледельцев">Дворец земледельцев</li>
+                <li data-category="Пешеходная экскурсия по Казани">Пешеходная экскурсия по Казани</li>
+                <li data-category="Театр Экият">Театр "Экият"</li>
+                <li data-category="Школьные экскурсии">Школьные экскурсии</li>
+                <li data-category="Речные прогулки">Речные прогулки</li>
+                <li data-category="Казанский Кремль">Казанский Кремль</li>
+                <li data-category="Мечеть Кул Шариф">Мечеть Кул Шариф</li>
+                <li data-category="Старо-татарская слобода">Старо-татарская слобода</li>
+                <li data-category="Башня Сююмбике">Башня Сююмбике</li>
+                <li data-category="Улица Баумана">Улица Баумана</li>
+            </ul>
         </div>
+    </div>
 
-        <script src="js/app.js"></script>
+    <script src="js/app.js"></script>
 </body>
 
 </html>
