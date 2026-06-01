@@ -262,21 +262,33 @@ function renderSchedule() {
     .catch(err => console.warn("Бекенд недоступен, используются дефолтные данные расписания:", err));
 }
 
-monthEl.onclick = ()=>{
+function closeMonthPicker() {
+  monthPicker.classList.add("hidden");
+}
+
+monthEl.onclick = (e)=>{
+  e.stopPropagation();
   monthPicker.classList.toggle("hidden");
   monthPicker.innerHTML="";
   months.forEach((m,i)=>{
     const div = document.createElement("div");
     div.textContent=m;
-    div.onclick=()=>{
+    div.onclick=(event)=>{
+      event.stopPropagation();
       currentDate.setMonth(i);
-      monthPicker.classList.add("hidden");
+      closeMonthPicker();
       renderCalendar();
       renderSchedule();
     }
     monthPicker.appendChild(div);
   });
 };
+
+monthPicker.onclick = (e) => {
+  e.stopPropagation();
+};
+
+document.addEventListener("click", closeMonthPicker);
 
 const prevMonthBtn = document.getElementById("prevMonth");
 const nextMonthBtn = document.getElementById("nextMonth");
@@ -285,23 +297,27 @@ const nextDayBtn = document.getElementById("nextDay");
 const fullScheduleBtn = document.getElementById("fullSchedule");
 
 if (prevMonthBtn) prevMonthBtn.onclick=()=>{
+  closeMonthPicker();
   currentDate.setMonth(currentDate.getMonth()-1);
   renderCalendar();
   renderSchedule();
 };
 if (nextMonthBtn) nextMonthBtn.onclick=()=>{
+  closeMonthPicker();
   currentDate.setMonth(currentDate.getMonth()+1);
   renderCalendar();
   renderSchedule();
 };
 
 if (prevDayBtn) prevDayBtn.onclick=()=>{
+  closeMonthPicker();
   currentDate.setDate(currentDate.getDate()-1);
   selectedDate = new Date(currentDate);
   renderCalendar();
   renderSchedule();
 };
 if (nextDayBtn) nextDayBtn.onclick=()=>{
+  closeMonthPicker();
   currentDate.setDate(currentDate.getDate()+1);
   selectedDate = new Date(currentDate);
   renderCalendar();
