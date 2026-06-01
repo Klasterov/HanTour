@@ -1,15 +1,8 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;500;600;700;800&display=swap');
 
-html {
-    overflow-x: clip;
-    scrollbar-gutter: stable;
-}
-
 body {
     margin: 0;
     font-family: 'Mulish', sans-serif;
-    max-width: 100vw;
-    overflow-x: hidden;
 }
 
 .mobile-header {
@@ -295,6 +288,7 @@ body {
         display: flex;
         flex-direction: column;
         padding: 0;
+        overflow-x: hidden;
         overflow-y: auto;
         transform: translateX(110%);
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -352,12 +346,12 @@ body {
         font-size: 16px;
         padding: 14px 20px;
         border-bottom: 1px solid #f0f0f0;
-        transition: 0.3s;
+        transition: background 0.2s ease, color 0.2s ease;
     }
 
     .mob-menu-nav a:hover {
-        color: green;
-        transform: scale(1.1);
+        background: #f6fff4;
+        color: #17AA00;
     }
 
     .mob-schedule-btn {
@@ -440,6 +434,13 @@ hr {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+@media (min-width: 1001px) and (max-width: 1260px) {
+    .container {
+        width: calc(100% - 32px);
+        box-sizing: border-box;
+    }
 }
 
 .nav-wrapper {
@@ -755,6 +756,13 @@ hr {
     max-width: 1200px;
     overflow: hidden;
     margin: 40px auto;
+}
+
+@media (min-width: 769px) and (max-width: 1260px) {
+    .hero {
+        width: calc(100% - 32px);
+        box-sizing: border-box;
+    }
 }
 
 .hero-bg {
@@ -1148,7 +1156,7 @@ hr {
 
 .calendar-header {
     display: grid;
-    grid-template-columns: 40px 1fr 40px;
+    grid-template-columns: 42px 1fr 42px;
     align-items: center;
     gap: 10px;
     margin: 0;
@@ -1176,8 +1184,8 @@ hr {
 
 .calendar-header .arrow,
 .schedule-header .arrow {
-    width: 24px;
-    height: 24px;
+    width: 42px;
+    height: 42px;
     border: none;
     border-radius: 0;
     background: transparent;
@@ -1186,7 +1194,8 @@ hr {
     align-items: center;
     justify-content: center;
     box-shadow: none;
-    font-size: 20px;
+    font-size: 36px;
+    font-weight: 600;
     line-height: 1;
     padding: 0;
 }
@@ -1730,10 +1739,9 @@ hr {
     margin-top: 16px;
 }
 
-.arrows button {
-    width: 32px;
-    height: 32px;
-    border: 1px solid #d0d0d0;
+.reviews .arrows button {
+    width: 44px;
+    height: 44px;
     background: white;
     border-radius: 50%;
     cursor: pointer;
@@ -1744,22 +1752,30 @@ hr {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
     flex-shrink: 0;
 }
 
-.arrows button:hover {
+.reviews .arrows button svg {
+    width: 44px;
+    height: 44px;
+}
+
+.reviews .arrows button svg path {
+    stroke-width: 2;
+}
+
+.reviews .arrows button:hover {
     border-color: #999;
     background: #f9f9f9;
     transform: scale(1.08);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.arrows button:active {
+.reviews .arrows button:active {
     transform: scale(0.92);
 }
 
-.arrows button:disabled {
+.reviews .arrows button:disabled {
     opacity: 0.4;
     cursor: not-allowed;
 }
@@ -1767,6 +1783,83 @@ hr {
 @media (max-width: 1100px) {
     .review-card {
         flex: 0 0 calc((100% - 16px) / 2);
+    }
+}
+
+@media (min-width: 1001px) and (max-width: 1260px) {
+    .reviews {
+        padding: 56px 16px;
+    }
+
+    .reviews-content {
+        grid-template-columns: 240px minmax(0, 1fr);
+        gap: 20px;
+    }
+
+    .rating-card {
+        width: 240px;
+        box-sizing: border-box;
+    }
+
+    .leave-btn {
+        width: 100%;
+        margin-top: 36px;
+        box-sizing: border-box;
+        font-size: 14px;
+    }
+
+    .slider-section {
+        margin-left: 0;
+    }
+
+    .review-card {
+        flex: 0 0 calc((100% - 16px) / 2);
+        width: auto;
+        box-sizing: border-box;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1000px) {
+    .reviews {
+        padding: 48px 16px;
+    }
+
+    .reviews-content {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .rating-card {
+        width: 100%;
+        max-width: none;
+        margin-top: 0;
+        box-sizing: border-box;
+    }
+
+    .yandex-row {
+        margin-top: 16px;
+    }
+
+    .leave-btn {
+        width: 100%;
+        max-width: 260px;
+        margin: 24px auto 0;
+        box-sizing: border-box;
+    }
+
+    .slider-section {
+        margin-left: 0;
+    }
+
+    .review-card {
+        flex: 0 0 calc((100% - 16px) / 2);
+        width: auto;
+        box-sizing: border-box;
+    }
+
+    .arrows {
+        flex-direction: row;
+        justify-content: flex-end;
     }
 }
 
@@ -1981,7 +2074,7 @@ hr {
 }
 
 .about-content.collapsed {
-    max-height: 940px;
+    max-height: 820px;
     position: relative;
 }
 
@@ -2002,17 +2095,21 @@ hr {
     color: black;
 }
 
+.about-content p {
+    margin: 0 0 16px;
+}
+
 .about-content li::marker {
     color: #17AA00;
 }
 
 .about-content h3 {
     font-size: 24px;
-    margin: 32px 0 32px;
+    margin: 28px 0 14px;
 }
 
 .about-content ul {
-    padding-left: 18px;
+    margin: 0 0 20px;
 }
 
 .about-toggle {
@@ -2071,12 +2168,15 @@ hr {
 
 .about-intro {
     display: flex;
+    align-items: center;
+    gap: 32px;
     justify-content: space-between;
 }
 
 .about-intro-text {
-    max-width: 650px;
-    margin-top: 40px;
+    flex: 1;
+    max-width: none;
+    margin-top: 0;
     line-height: 24px;
 }
 
@@ -2086,7 +2186,7 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 40px;
 }
 
 .attractions-gallery-header h2 {
@@ -2306,8 +2406,10 @@ hr {
 .faq-container {
     max-width: 1200px;
     margin: 0 auto;
-    display: flex;
-    gap: 60px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 486px;
+    gap: 48px;
+    align-items: start;
 }
 
 .faq-left {
@@ -2333,13 +2435,16 @@ hr {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 18px;
     cursor: pointer;
     font-weight: 500;
     font-size: 16px;
 }
 
 .faq-question span{
-    max-width: 560px;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
 }
 
 .faq-toggle {
@@ -2349,25 +2454,27 @@ hr {
     background: #16a34a;
     color: white;
     position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     font-size: 0;
-    line-height: 0;
     flex-shrink: 0;
     transition: 0.3s;
 }
 
-.faq-toggle::before {
-    content: "+";
-    position: relative;
-    top: 30%;
-    left: 20%;
+.faq-toggle::before,
+.faq-toggle::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 2px;
+    border-radius: 999px;
+    background: #fff;
     transform: translate(-50%, -50%);
-    font-size: 20px;
-    line-height: 1;
-    font-weight: 500;
-    color: #fff;
+}
+
+.faq-toggle::after {
+    transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .faq-answer {
@@ -2397,7 +2504,7 @@ hr {
     border-radius: 14px;
     padding: 30px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    margin-top: 80px;
+    margin-top: 0;
 }
 
 .faq-right h3 {
@@ -2987,7 +3094,7 @@ hr {
     }
 
     .about-content.collapsed {
-        max-height: 600px;
+        max-height: 520px;
     }
 
     .attractions-gallery-header {
@@ -3003,6 +3110,7 @@ hr {
     }
 
     .faq-container {
+        display: flex;
         flex-direction: column;
         padding: 0 16px;
         gap: 24px;
@@ -3686,9 +3794,9 @@ hr {
         height: 4px;
     }
 
-    .arrows button {
-        width: 36px;
-        height: 36px;
+    .reviews .arrows button {
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         font-size: 18px;
         border: 1px solid #ddd;
@@ -3697,6 +3805,11 @@ hr {
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+    }
+
+    .reviews .arrows button svg {
+        width: 44px;
+        height: 44px;
     }
 
     .reviews-all-link-mobile {
@@ -4275,6 +4388,7 @@ hr {
         max-width: 100%;
         border-radius: 12px;
         overflow: hidden;
+        margin-bottom: 12px;
     }
 
     .about-content h3 {
@@ -4293,7 +4407,7 @@ hr {
     }
 
     .about-toggle {
-    margin: 12px auto 0;
+    margin: 24px auto 0;
     background: none;
     border: none;
     font-family: 'Formular', 'Mulish', sans-serif;
@@ -4557,12 +4671,11 @@ hr {
         max-width: 100%;
     }
 
-    /* FAQ question span - nu mai are lățime fixă */
     .faq-question span {
         width: auto !important;
         flex: 1;
         min-width: 0;
-        max-width: calc(100vw - 100px);
+        max-width: none;
     }
 
     /* Excursion cards nu ies din grid */
@@ -4646,30 +4759,6 @@ hr {
         min-height: 300px;
     }
 }
-/* About image - flotata la dreapta in continut */
-.about-image-inline {
-    float: right;
-    margin: 0 0 16px 24px;
-    width: max-content;
-    height: auto;
-    border-radius: 12px;
-    display: block;
-}
-
-.about-content::after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-@media (max-width: 768px) {
-    .about-image-inline {
-        float: none;
-        width: 100%;
-        margin: 0 0 16px 0;
-    }
-}
-
 /* Final mobile override for date calendar */
 @media (max-width: 768px) {
     .date-section .container {
@@ -4696,7 +4785,7 @@ hr {
     }
 
     .calendar-header {
-        grid-template-columns: 24px 1fr 24px;
+        grid-template-columns: 36px 1fr 36px;
         gap: 8px;
         padding: 18px 24px 16px;
         border-bottom: 1px solid #efefef;
@@ -4785,9 +4874,9 @@ hr {
 
     .schedule-header .arrow,
     .calendar-header .arrow {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
+        font-size: 34px;
+        width: 36px;
+        height: 36px;
     }
 
     #selectedDateText {
@@ -4895,17 +4984,143 @@ hr {
 @media screen and (max-width:1180px) {
     .nav-top{
         font-size: 14px;
-        gap: 20px;
+        gap: 16px;
+        justify-content: space-between;
     }
+
+    .logo svg {
+        width: 180px;
+        max-width: 100%;
+        height: auto;
+    }
+
     .phone-number{
         font-size: 14px;
     }
+
     .nav-item{
         font-size: 12px;
-        width: 100%;
+        width: auto;
+        min-width: 0;
+        flex-shrink: 1;
     }
+
+    .nav-top .address {
+        max-width: 190px;
+    }
+
+    .phone-text-block {
+        min-width: 0;
+    }
+
+    .phone-number,
+    .phone-subtext {
+        white-space: nowrap;
+    }
+
     .call-btn{
+        width: 150px;
+        min-width: 150px;
+        margin-left: 0;
+        font-size: 14px;
+    }
+
+    .nav-menu {
+        gap: 14px;
+        font-size: 14px;
+    }
+
+    .schedule-btn {
+        margin-left: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .socials {
+        gap: 6px;
+    }
+
+    .social svg {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+@media (max-width: 768px) {
+    .date-section .container,
+    .reviews .container {
         width: 100%;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+
+    .date-section .section-title,
+    .reviews-header {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .date-wrapper,
+    .reviews-content,
+    .slider-section {
+        padding-left: 0;
+        padding-right: 0;
+        box-sizing: border-box;
+    }
+
+    .calendar-card,
+    .schedule-card,
+    .rating-card,
+    .review-card,
+    .reviews-all-link-mobile {
+        box-sizing: border-box;
+    }
+
+    .rating-card {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .review-card {
+        max-width: 100% !important;
+    }
+
+    .reviews-all-link-mobile {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal,
+    .topics-modal,
+    .all-cats-modal,
+    .mob-phone-modal {
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    .modal-content,
+    #modal .modal-content,
+    .topics-modal-content,
+    .all-cats-modal-content,
+    .mob-phone-modal-content {
+        width: min(100%, 420px);
+        max-width: 100%;
+        max-height: calc(100vh - 32px);
+        margin: 0;
+        border-radius: 16px;
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+
+    .mob-phone-modal-content {
+        padding: 28px 20px;
     }
 }
 
